@@ -1,6 +1,9 @@
+mod dash;
+
 use std::path::Path;
 use walkdir::WalkDir;
 use indicatif::{ProgressBar, ProgressStyle};
+use dash::DashData;
 
 fn main() {
     
@@ -18,7 +21,7 @@ fn main() {
     println!("\nSearching for PDF files in: {:?}\n", current_dir.display());
 
     // First pass: Count total files
-    println!("Counting files...");
+    println!("Counting files...\n");
     let total_files = WalkDir::new(current_dir.clone())
         .into_iter()
         .filter_map(|e| e.ok())
@@ -55,7 +58,7 @@ fn main() {
         }
     }
 
-    pb.finish_with_message("Search complete!");
+    pb.finish_with_message("Search complete!\n");
 
     // Show results
     if pdf_files.is_empty() {
@@ -66,4 +69,6 @@ fn main() {
             println!("{:?}", pdf_file);
         }
     }
+
+    
 }
