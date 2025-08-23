@@ -1,3 +1,6 @@
+// dash.rs
+
+// Struct to store the data
 pub struct DashData {
     pub total_counts: usize,
     pub total_size: u64,
