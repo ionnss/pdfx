@@ -1,7 +1,7 @@
 # pdfx
 
 <div align="center">
-  <img src="bg_rc_logo.png" alt="pdfx logo" width="200"/>
+  <img src="img/bg_rc_logo.png" alt="pdfx logo" width="200"/>
   <br><br>
   
   **🔍 A lightning-fast terminal-native PDF finder and analyzer**
