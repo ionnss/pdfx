@@ -1,7 +1,7 @@
 # pdfx
 
 <div align="center">
-  <img src="img/bg_rc_logo.png" alt="pdfx logo" width="200"/>
+  <img src="img/bg_rc_logo.png" alt="pdfx logo" width="300"/>
   <br><br>
   
   **🔍 A lightning-fast terminal-native PDF finder and analyzer**
@@ -93,9 +93,9 @@ Counting files...
 
 Found 23 PDF files:
 
-"/Users/ions/Downloads/The Rust Programming Language.pdf"
-"/Users/ions/Downloads/research_paper.pdf"
-"/Users/ions/Downloads/presentation.pdf"
+"/Users/user/Downloads/TheRustProgrammingLanguage.pdf"
+"/Users/user/Downloads/research_paper.pdf"
+"/Users/user/Downloads/presentation.pdf"
 ...
 ```
 
