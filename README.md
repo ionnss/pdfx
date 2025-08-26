@@ -4,7 +4,7 @@
   <img src="assets/bg_rc_logo.png" alt="pdfx logo" width="300"/>
   <br><br>
   
-  **🔍 A lightning-fast terminal-native PDF all things related**
+  **🛠️ A lightning-fast terminal-native PDF all things related**
   
   [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

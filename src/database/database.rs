@@ -18,7 +18,7 @@ impl PdfDatabase {
         conn.execute(
             "CREATE TABLE IF NOT EXISTS pdfs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                path TEXT NOT NULL,
+                path TEXT NOT NULL UNIQUE,
                 filename TEXT NOT NULL,
                 size INTEGER NOT NULL,
                 modified DATETIME NOT NULL,
@@ -32,9 +32,10 @@ impl PdfDatabase {
     }
 
     pub fn insert_pdf(&self, pdf: &PdfEntry) -> Result<()> {
-        // 1. Insert the PDF into the database
+        // Use INSERT OR REPLACE to handle duplicates
+        // This will update the entry if path already exists
         self.conn.execute(
-            "INSERT INTO pdfs (path, filename, size, modified, indexed_at)
+            "INSERT OR REPLACE INTO pdfs (path, filename, size, modified, indexed_at)
             VALUES (?, ?, ?, ?, ?)",
            params![
                 pdf.path,
@@ -46,6 +47,14 @@ impl PdfDatabase {
         )?;
 
         Ok(())
+    }
+
+    pub fn count_pdfs(&self) -> Result<i64> {
+        // 1. Count the number of PDFs in the database
+        let count = self.conn.query_row("SELECT COUNT(*) FROM pdfs", [], |row| row.get(0))?;
+
+        // 2. Return the count
+        Ok(count)
     }
 }
 

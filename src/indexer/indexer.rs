@@ -4,16 +4,62 @@
 use std::path::Path;
 use walkdir::WalkDir;
 use chrono::{Utc, DateTime};
+use indicatif::{ProgressBar, ProgressStyle};
 use crate::database::database::PdfDatabase;
 use crate::types::PdfEntry;
 
 // function to scan a directory for PDF files
 pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn std::error::Error>> {
-    // 1. Walk the directory tree recursively with walkdir
+    
+    // Phase 1: Count total files for accurate progress bar
+    let count_pb = ProgressBar::new_spinner();
+    count_pb.set_style(
+        ProgressStyle::default_spinner()
+            .template("{spinner:.green} {msg} {pos}")
+            .unwrap()
+            .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
+    );
+    count_pb.set_message("Counting files...\n");
+
+    let mut total_files = 0;
+    for entry in WalkDir::new(path) {
+        if entry.is_ok() {
+            total_files += 1;
+            if total_files % 100 == 0 {
+                count_pb.set_position(total_files);
+            }
+        }
+    }
+    count_pb.finish_and_clear();
+
+    // Phase 2: Process files with accurate progress bar
+    let pb = ProgressBar::new(total_files);
+    pb.set_style(
+        ProgressStyle::default_bar()
+            .template("🔍 {msg} [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}\n")
+            .unwrap()
+            .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
+    );
+    pb.set_message("Scanning for PDFs...");
+
+    let mut files_processed = 0;
+    let mut pdfs_found = 0;
+    let mut dirs_skipped = 0;
+
+    // Walk the directory tree recursively with walkdir
     for entry in WalkDir::new(path) {
 
-        // 1.1. Error handling for walkdir 
-        let entry = entry?;
+        // Error handling for walkdir - silent skip permission denied
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(_) => {
+                dirs_skipped += 1;
+                continue;
+            }
+        };
+
+        files_processed += 1;
+        pb.set_position(files_processed);
 
         // 1.2. Get the file path
         let file_path = entry.path();
@@ -36,9 +82,17 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn 
 
                 // 1.3.4. Insert the PDF into the database
                 database.insert_pdf(&pdf_entry)?;
+                pdfs_found += 1;
             }
         }
 
     }   
+
+    // Finish progress bar with summary
+    pb.finish_with_message(
+        format!("✅ Scan complete! {} PDFs found | {} files processed | {} directories skipped\n", 
+                pdfs_found, files_processed, dirs_skipped)
+    );
+    
     Ok(())
 }
