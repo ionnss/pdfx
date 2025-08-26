@@ -14,6 +14,9 @@
   [![Crates.io](https://img.shields.io/crates/v/pdfx)](https://crates.io/crates/pdfx)
   [![Downloads](https://img.shields.io/crates/d/pdfx)](https://crates.io/crates/pdfx)
   [![Contributors](https://img.shields.io/github/contributors/ionnss/pdfx)](https://github.com/ionnss/pdfx/graphs/contributors)
+
+  [![GitHub Stars](https://img.shields.io/github/stars/ionnss/pdfx?style=social)](https://github.com/ionnss/pdfx/stargazers)
+  [![GitHub Issues](https://img.shields.io/github/issues/ionnss/pdfx)](https://github.com/ionnss/pdfx/issues)
 </div>
 
 ---
