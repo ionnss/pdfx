@@ -10,7 +10,7 @@ pub struct PdfEntry {
     pub filename: String,
     pub size: u64,
     pub modified: DateTime<Utc>,
-    pub indexed_at: Some(Utc::now()),
+    pub indexed_at: Option<DateTime<Utc>>,
 }
 
 
