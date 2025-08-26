@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary-suffix: ""
+            archive-suffix: "tar.gz"
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            binary-suffix: ".exe"
+            archive-suffix: "zip"
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            binary-suffix: ""
+            archive-suffix: "tar.gz"
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            binary-suffix: ""
+            archive-suffix: "tar.gz"
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: ${{ matrix.target }}
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/cache
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+    
+    - name: Build binary
+      run: cargo build --verbose --release --target ${{ matrix.target }}
+    
+    - name: Prepare binary
+      shell: bash
+      run: |
+        mkdir -p release
+        binary_name="pdfx${{ matrix.binary-suffix }}"
+        mv "target/${{ matrix.target }}/release/${binary_name}" "release/"
+        
+        # Create archive
+        cd release
+        if [ "${{ matrix.archive-suffix }}" = "zip" ]; then
+          7z a "pdfx-${{ github.ref_name }}-${{ matrix.target }}.zip" "${binary_name}"
+        else
+          tar -czf "pdfx-${{ github.ref_name }}-${{ matrix.target }}.tar.gz" "${binary_name}"
+        fi
+    
+    - name: Upload binaries as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: pdfx-${{ matrix.target }}
+        path: release/pdfx-${{ github.ref_name }}-${{ matrix.target }}.*
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: artifacts/**/*
+        body: |
+          ## 🎉 Release ${{ github.ref_name }}
+          
+          ### 📦 Download for your platform:
+          - **Linux x86_64**: `pdfx-${{ github.ref_name }}-x86_64-unknown-linux-gnu.tar.gz`
+          - **Windows x86_64**: `pdfx-${{ github.ref_name }}-x86_64-pc-windows-msvc.zip`  
+          - **macOS Intel**: `pdfx-${{ github.ref_name }}-x86_64-apple-darwin.tar.gz`
+          - **macOS Apple Silicon**: `pdfx-${{ github.ref_name }}-aarch64-apple-darwin.tar.gz`
+          
+          ### 🚀 Installation:
+          1. Download the appropriate binary for your platform
+          2. Extract the archive
+          3. Make executable (Linux/macOS): `chmod +x pdfx`
+          4. Run: `./pdfx --help`
+          
+          ### ✨ What's New:
+          See [RELEASE_NOTES.md](https://github.com/ionnss/pdfx/blob/main/RELEASE_NOTES.md) for full details.
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
