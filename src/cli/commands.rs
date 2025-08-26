@@ -49,7 +49,7 @@ pub fn cleanup_command() -> Result<(), Box<dyn std::error::Error>> {
         println!("\n✅ Cleaned up pdfx data directory: {}\n", pdfx_dir.display());
         println!("🗑️  Removed database and all indexed data\n");
     } else { 
-        println!("ℹ️  No pdfx data found to clean up\n");
+        println!("\nℹ️  No pdfx data found to clean up\n");
     }
     
     Ok(())

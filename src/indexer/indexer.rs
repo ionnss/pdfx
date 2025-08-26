@@ -19,7 +19,7 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn 
             .unwrap()
             .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
     );
-    count_pb.set_message("Counting files...\n");
+    count_pb.set_message("Counting files...");
 
     let mut total_files = 0;
     for entry in WalkDir::new(path) {
@@ -36,7 +36,7 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn 
     let pb = ProgressBar::new(total_files);
     pb.set_style(
         ProgressStyle::default_bar()
-            .template("🔍 {msg} [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}\n")
+            .template("🔍 {msg} [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}")
             .unwrap()
             .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
     );
