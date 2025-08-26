@@ -1,7 +1,7 @@
 # pdfx
 
 <div align="center">
-  <img src="assets/bg_rc_logo.png" alt="pdfx logo" width="500"/>
+  <img src="assets/bg_rc_logo.png" alt="pdfx logo" width="300"/>
   <br><br>
   
   **🛠️ A lightning-fast terminal-native PDF indexing and search toolkit**
@@ -9,19 +9,25 @@
   [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![GitHub release](https://img.shields.io/github/release/ionnss/pdfx.svg)](https://github.com/ionnss/pdfx/releases)
+  
+  [![Build Status](https://img.shields.io/github/actions/workflow/status/ionnss/pdfx/ci.yml?branch=master)](https://github.com/ionnss/pdfx/actions)
+  [![Crates.io](https://img.shields.io/crates/v/pdfx)](https://crates.io/crates/pdfx)
+  [![Downloads](https://img.shields.io/crates/d/pdfx)](https://crates.io/crates/pdfx)
+  [![Contributors](https://img.shields.io/github/contributors/ionnss/pdfx)](https://github.com/ionnss/pdfx/graphs/contributors)
 </div>
 
 ---
 
 ## ✨ Features
 
-- **🚀 Lightning Fast**: Index PDFs once, search instantly with beautiful Braille progress bars
-- **🎯 Smart Indexing**: Build a searchable database of all your PDF files
-- **📊 No Duplicates**: Intelligent duplicate prevention - re-indexing updates existing entries
-- **🛡️ Robust**: Gracefully handles permission errors and system directories
-- **🧹 Clean Uninstall**: Complete cleanup with `pdfx cleanup` command
-- **💻 Cross-Platform**: Works on Linux, macOS, and Windows
-- **🎨 Beautiful Interface**: Docker-style progress bars with modern terminal UI
+- **🚀 Lightning Fast Indexing**: Two-phase scanning with real-time progress tracking - no more waiting for searches
+- **🎯 Smart Database**: SQLite-powered indexing with metadata extraction (path, size, modified date)
+- **📊 Zero Duplicates**: Intelligent `INSERT OR REPLACE` prevents duplicate entries during re-indexing  
+- **🛡️ System-Aware**: Gracefully skips protected directories (Photos, Mail, etc.) and continues scanning
+- **🧹 Complete Cleanup**: `pdfx cleanup` removes all traces - perfect for uninstalling
+- **💻 Cross-Platform**: Native support for Linux, macOS, and Windows with proper data directories
+- **🎨 Beautiful Progress**: Custom Braille character progress bars (`⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋`) with ETA and speed
+- **⚡ Instant Commands**: Once indexed, all operations are database-fast (no filesystem scanning)
 
 ---
 
