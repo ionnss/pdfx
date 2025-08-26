@@ -1,8 +1,8 @@
 // database.rs
 
 // imports
-use rusqlite::{Connection, Result, params};
 use crate::types::PdfEntry;
+use rusqlite::{params, Connection, Result};
 
 // Connection string for the database
 pub struct PdfDatabase {
@@ -37,13 +37,13 @@ impl PdfDatabase {
         self.conn.execute(
             "INSERT OR REPLACE INTO pdfs (path, filename, size, modified, indexed_at)
             VALUES (?, ?, ?, ?, ?)",
-           params![
+            params![
                 pdf.path,
                 pdf.filename,
                 pdf.size as i64,
                 pdf.modified.to_rfc3339(),
                 pdf.indexed_at.unwrap().to_rfc3339(),
-            ]
+            ],
         )?;
 
         Ok(())
@@ -51,10 +51,11 @@ impl PdfDatabase {
 
     pub fn count_pdfs(&self) -> Result<i64> {
         // 1. Count the number of PDFs in the database
-        let count = self.conn.query_row("SELECT COUNT(*) FROM pdfs", [], |row| row.get(0))?;
+        let count = self
+            .conn
+            .query_row("SELECT COUNT(*) FROM pdfs", [], |row| row.get(0))?;
 
         // 2. Return the count
         Ok(count)
     }
 }
-

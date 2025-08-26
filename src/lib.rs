@@ -1,4 +1,4 @@
-pub mod types;
+pub mod cli;
 pub mod database;
 pub mod indexer;
-pub mod cli;
+pub mod types;

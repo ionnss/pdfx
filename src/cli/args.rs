@@ -8,9 +8,9 @@ use std::path::PathBuf;
 #[command(about = "🛠️ A lightning-fast terminal-native PDF toolkit")]
 #[command(version = "0.1.0")]
 #[command(author = "ions <zara.leonardo@gmail.com>")]
-#[command(long_about = "pdfx is a lightning-fast terminal-native PDF toolkit. It allows you to index, search, and manage your PDF files with ease.")]
-
-
+#[command(
+    long_about = "pdfx is a lightning-fast terminal-native PDF toolkit. It allows you to index, search, and manage your PDF files with ease."
+)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,
@@ -18,7 +18,6 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    
     // Initialize PDF index for current directory
     Init {
         // Directory to index (defaults to current directory)
@@ -47,8 +46,4 @@ pub enum Commands {
 
     // Clean up pdfx data and database
     Cleanup,
-    
 }
-
-
-

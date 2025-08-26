@@ -1,23 +1,25 @@
 // indexer.rs
 
 // imports
+use crate::database::db::PdfDatabase;
+use crate::types::PdfEntry;
+use chrono::{DateTime, Utc};
+use indicatif::{ProgressBar, ProgressStyle};
 use std::path::Path;
 use walkdir::WalkDir;
-use chrono::{Utc, DateTime};
-use indicatif::{ProgressBar, ProgressStyle};
-use crate::database::database::PdfDatabase;
-use crate::types::PdfEntry;
 
 // function to scan a directory for PDF files
-pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn std::error::Error>> {
-    
+pub fn scan_directory(
+    path: &Path,
+    database: &PdfDatabase,
+) -> Result<(), Box<dyn std::error::Error>> {
     // Phase 1: Count total files for accurate progress bar
     let count_pb = ProgressBar::new_spinner();
     count_pb.set_style(
         ProgressStyle::default_spinner()
             .template("{spinner:.green} {msg} {pos}")
             .unwrap()
-            .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
+            .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ "),
     );
     count_pb.set_message("Counting files...");
 
@@ -48,7 +50,6 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn 
 
     // Walk the directory tree recursively with walkdir
     for entry in WalkDir::new(path) {
-
         // Error handling for walkdir - silent skip permission denied
         let entry = match entry {
             Ok(entry) => entry,
@@ -85,14 +86,13 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn 
                 pdfs_found += 1;
             }
         }
-
-    }   
+    }
 
     // Finish progress bar with summary
-    pb.finish_with_message(
-        format!("✅ Scan complete! {} PDFs found | {} files processed | {} directories skipped\n", 
-                pdfs_found, files_processed, dirs_skipped)
-    );
-    
+    pb.finish_with_message(format!(
+        "✅ Scan complete! {} PDFs found | {} files processed | {} directories skipped\n",
+        pdfs_found, files_processed, dirs_skipped
+    ));
+
     Ok(())
 }

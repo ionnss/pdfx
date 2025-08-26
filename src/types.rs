@@ -12,5 +12,3 @@ pub struct PdfEntry {
     pub modified: DateTime<Utc>,
     pub indexed_at: Option<DateTime<Utc>>,
 }
-
-

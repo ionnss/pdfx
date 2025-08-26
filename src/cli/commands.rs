@@ -1,9 +1,9 @@
 // commands.rs
 
-use std::path::Path;
+use crate::database::db::PdfDatabase;
+use crate::indexer::scanner::scan_directory;
 use dirs;
-use crate::database::database::PdfDatabase;
-use crate::indexer::indexer::scan_directory;
+use std::path::Path;
 
 pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     // 1. Get database path using dirs crate
@@ -16,7 +16,11 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     scan_directory(dir_path, &db)?;
 
     // 4. Print success message
-    println!("\nIndexed {} PDFs in {}\n", db.count_pdfs()?, db_path.display());
+    println!(
+        "\nIndexed {} PDFs in {}\n",
+        db.count_pdfs()?,
+        db_path.display()
+    );
     Ok(())
 }
 
@@ -42,16 +46,19 @@ pub fn cleanup_command() -> Result<(), Box<dyn std::error::Error>> {
     // Check if pdfx directory exists WITHOUT creating it
     let data_dir = dirs::data_dir().expect("Failed to get data directory");
     let pdfx_dir = data_dir.join("pdfx");
-    
+
     if pdfx_dir.exists() {
         // Remove the entire pdfx directory and database
         std::fs::remove_dir_all(&pdfx_dir)?;
-        println!("\n✅ Cleaned up pdfx data directory: {}\n", pdfx_dir.display());
+        println!(
+            "\n✅ Cleaned up pdfx data directory: {}\n",
+            pdfx_dir.display()
+        );
         println!("🗑️  Removed database and all indexed data\n");
-    } else { 
+    } else {
         println!("\nℹ️  No pdfx data found to clean up\n");
     }
-    
+
     Ok(())
 }
 
