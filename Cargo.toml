@@ -1,7 +1,21 @@
 [package]
 name = "pdfx"
 version = "0.1.0"
-edition = "2024"
+edition = "2025"
+authors = ["ions <zara.leonardo@gmail.com>"]
+license = "MIT"
+description = "A lightning-fast terminal-native PDF indexing and search toolkit"
+readme = "README.md"
+homepage = "https://github.com/ionnss/pdfx"
+repository = "https://github.com/ionnss/pdfx"
+keywords = ["pdf", "search", "indexing", "cli", "terminal"]
+categories = ["command-line-utilities", "filesystem"]
+exclude = [
+    "assets/*",
+    ".github/*",
+    "*.png",
+    "*.jpg"
+]
 
 [dependencies]
 chrono = "0.4.41"
