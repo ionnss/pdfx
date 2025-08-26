@@ -1,7 +1,7 @@
 // database.rs
 
 // imports
-use rusqlite::{Connection, Result};
+use rusqlite::{Connection, Result, params};
 use crate::types::PdfEntry;
 
 // Connection string for the database
@@ -36,12 +36,12 @@ impl PdfDatabase {
         self.conn.execute(
             "INSERT INTO pdfs (path, filename, size, modified, indexed_at)
             VALUES (?, ?, ?, ?, ?)",
-            [
-                &pdf.path.as_str(),
-                &pdf.filename.as_str(),
-                &(pdf.size as i64),
-                &pdf.modified.to_rfc3339(),
-                &pdf.indexed_at.unwrap().to_rfc3339(),
+           params![
+                pdf.path,
+                pdf.filename,
+                pdf.size as i64,
+                pdf.modified.to_rfc3339(),
+                pdf.indexed_at.unwrap().to_rfc3339(),
             ]
         )?;
 

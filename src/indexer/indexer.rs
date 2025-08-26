@@ -2,15 +2,13 @@
 
 // imports
 use std::path::Path;
-use std::fs;
-use rusqlite::Result;
 use walkdir::WalkDir;
 use chrono::{Utc, DateTime};
 use crate::database::database::PdfDatabase;
 use crate::types::PdfEntry;
 
 // function to scan a directory for PDF files
-pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<()> {
+pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<(),Box<dyn std::error::Error>> {
     // 1. Walk the directory tree recursively with walkdir
     for entry in WalkDir::new(path) {
 
@@ -41,7 +39,6 @@ pub fn scan_directory(path: &Path, database: &PdfDatabase) -> Result<()> {
             }
         }
 
-
-
-    }
+    }   
+    Ok(())
 }
