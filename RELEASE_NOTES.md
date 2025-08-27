@@ -13,7 +13,10 @@ We're excited to introduce **pdfx** - a lightning-fast terminal-native PDF index
 - **🪟 Windows Build Fix**: Added bundled SQLite feature to resolve Windows linking issues
 - **🚀 Automated Releases**: GitHub Actions now automatically builds binaries for all platforms
 - **📦 Four Platform Support**: Linux x86_64, Windows x86_64, macOS Intel, macOS Apple Silicon
+- **🔄 GitHub Actions v4 Compatibility**: Updated to `actions/upload-artifact@v4` and `actions/download-artifact@v4`
+- **🚫 Artifact Conflicts**: Resolved v4 immutability issues with matrix build strategy  
 - **🔒 Reproducible Builds**: Updated `Cargo.lock` for consistent dependency versions
+- **🔐 Release Permissions**: Granted `contents: write` to GitHub Token for release creation
 
 #### **🧹 Repository Cleanup**
 - **📝 Code Formatting**: Applied `rustfmt` standards across entire codebase
@@ -27,7 +30,7 @@ We're excited to introduce **pdfx** - a lightning-fast terminal-native PDF index
 - **📊 Build Status**: Real-time build status badges
 - **🏗️ Multi-Platform Builds**: Simultaneous building across Linux, Windows, and macOS
 
-### **📦 Core Features** *(Stable)*
+#### **📦 Core Features** *(Stable)*
 - **🔍 Smart PDF Indexing**: SQLite-powered database with metadata extraction
 - **⚡ Lightning Fast**: Two-phase scanning with accurate progress tracking  
 - **🎨 Beautiful Progress Bars**: Custom Braille character indicators (`⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋`)
@@ -49,20 +52,6 @@ pdfx cleanup            # Complete data cleanup and uninstall
 - **Complete Privacy**: No cloud storage, no tracking, no data sharing
 - **Clean Uninstall**: `pdfx cleanup` removes all traces
 
-### 🛠️ **Technical Highlights**
-
-- **Architecture**: Clean modular design with proper separation of concerns
-- **Error Handling**: Robust error handling with graceful degradation
-- **Performance**: Efficient two-phase scanning for accurate progress tracking
-- **Memory Safe**: Built with Rust for memory safety and performance
-
-### 📊 **Database Schema**
-Your PDFs are indexed with:
-- Full file path and filename
-- File size and modification timestamps  
-- Indexing timestamp for change detection
-- Unique path constraints to prevent duplicates
-
 ### 🚀 **Getting Started**
 
 1. **Install**:
@@ -77,39 +66,11 @@ Your PDFs are indexed with:
 
 3. **Enjoy lightning-fast PDF management!**
 
-### 🐛 **Fixes**
-- **Windows Compilation**: Resolved `LNK1181: cannot open input file 'sqlite3.lib'` error
-- **CI Build Failures**: Fixed formatting and linting issues that broke automated builds
-- **Module Organization**: Eliminated clippy warnings about module inception
-- **Binary Artifacts**: Prevented accidental commit of large binary files
-
-### 📋 **Technical Details**
-- **SQLite Integration**: Uses bundled SQLite (no system dependencies required)
-- **Cross-Compilation**: Supports building for multiple targets simultaneously
-- **Memory Safe**: 100% Rust implementation with zero unsafe code
-- **Dependency Management**: All dependencies locked for reproducible builds
-
----
-
-## v0.1.1 - Workflow Integration 🔄
-*Released: January 2025*
-
-### 🛠️ **GitHub Actions Integration**
-- Added CI/CD workflows for automated testing and building
-- Cross-platform build matrix (Linux, Windows, macOS)
-- Security audit workflow for dependency monitoring
-
----
-
-## v0.1.0 - Initial Release 🚀  
-*Released: January 2025*
-
-### 🎉 **First Public Release**
-- Core PDF indexing functionality with SQLite backend
-- Two-phase scanning with Braille progress indicators
-- Cross-platform data directory support
-- Graceful error handling for system permissions
-- Complete cleanup functionality
+### 📋 **System Requirements**
+- **Operating System**: Linux, macOS, or Windows  
+- **Architecture**: x86_64 (Intel/AMD64) or ARM64 (Apple Silicon)
+- **Terminal**: Modern terminal with Unicode/UTF-8 support
+- **Storage**: ~50MB for installation, variable for database (depends on PDF count)
 
 ---
 
