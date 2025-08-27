@@ -71,7 +71,7 @@ jobs:
     - name: Upload binaries as artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: pdfx-${{ matrix.target }}
+        name: pdfx-${{ matrix.target }}-${{ github.run_id }}
         path: release/pdfx-${{ github.ref_name }}-${{ matrix.target }}.*
 
   release:
@@ -86,7 +86,9 @@ jobs:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
+        pattern: pdfx-*-${{ github.run_id }}
         path: artifacts
+        merge-multiple: true
     
     - name: Create Release
       uses: softprops/action-gh-release@v1
