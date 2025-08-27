@@ -9,6 +9,7 @@
   [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![GitHub release](https://img.shields.io/github/release/ionnss/pdfx.svg)](https://github.com/ionnss/pdfx/releases)
+  [![Release](https://github.com/ionnss/pdfx/actions/workflows/release.yml/badge.svg)](https://github.com/ionnss/pdfx/actions/workflows/release.yml)
   
   [![Build Status](https://img.shields.io/github/actions/workflow/status/ionnss/pdfx/ci.yml?branch=master)](https://github.com/ionnss/pdfx/actions)
   [![Crates.io](https://img.shields.io/crates/v/pdfx)](https://crates.io/crates/pdfx)
@@ -17,6 +18,8 @@
 
   [![GitHub Stars](https://img.shields.io/github/stars/ionnss/pdfx?style=social)](https://github.com/ionnss/pdfx/stargazers)
   [![GitHub Issues](https://img.shields.io/github/issues/ionnss/pdfx)](https://github.com/ionnss/pdfx/issues)
+
+  
 </div>
 
 ---
