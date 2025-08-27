@@ -1,6 +1,6 @@
 # Release Notes
 
-## v0.1.2 - Cross-Platform Release 🌍
+## v0.1.3 - Cross-Platform Release 🌍
 *Released: August 2025*
 
 ### 🎉 **Fully Cross-Platform Release**
