@@ -1,6 +1,6 @@
 [package]
 name = "pdfx"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authors = ["ions <zara.leonardo@gmail.com>"]
 license = "MIT"

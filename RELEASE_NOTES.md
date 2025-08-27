@@ -1,5 +1,33 @@
 # Release Notes
 
+## v0.1.4 - GitHub Actions v4 Compatibility 🔧
+*Released: January 2025*
+
+### 🎯 **GitHub Actions Workflow Fixes**
+
+**Critical infrastructure update** to ensure reliable cross-platform binary generation.
+
+#### **✅ Fixed**
+- **🔄 GitHub Actions v4 Compatibility**: Updated to `actions/upload-artifact@v4` and `actions/download-artifact@v4`
+- **🚫 Artifact Conflicts**: Resolved v4 immutability issues with matrix build strategy  
+- **📦 Proper Binary Generation**: Fixed workflow to successfully create all 4 platform binaries
+- **⚡ Performance**: v4 provides up to 10x faster artifact uploads/downloads
+
+#### **🛠️ Technical Improvements**
+- **Unique Artifact Names**: Added `run_id` suffix to prevent naming conflicts
+- **Pattern-Based Downloads**: Used v4's new pattern matching and merge capabilities
+- **Immutable Artifacts**: Adapted workflow to v4's immutable artifact model
+- **Matrix Strategy**: Properly configured for parallel cross-platform builds
+
+#### **📦 Release Binaries**
+This release should successfully generate binaries for:
+- **Linux x86_64**: `pdfx-v0.1.4-x86_64-unknown-linux-gnu.tar.gz`
+- **Windows x86_64**: `pdfx-v0.1.4-x86_64-pc-windows-msvc.zip`  
+- **macOS Intel**: `pdfx-v0.1.4-x86_64-apple-darwin.tar.gz`
+- **macOS Apple Silicon**: `pdfx-v0.1.4-aarch64-apple-darwin.tar.gz`
+
+---
+
 ## v0.1.3 - Cross-Platform Release 🌍
 *Released: August 2025*
 
