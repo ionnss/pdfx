@@ -6,7 +6,7 @@ use std::path::PathBuf;
 #[derive(Parser)]
 #[command(name = "pdfx")]
 #[command(about = "🛠️ A lightning-fast terminal-native PDF toolkit")]
-#[command(version = "0.1.0")]
+#[command(version = "0.1.1")]
 #[command(author = "ions <zara.leonardo@gmail.com>")]
 #[command(
     long_about = "pdfx is a lightning-fast terminal-native PDF toolkit. It allows you to index, search, and manage your PDF files with ease."
