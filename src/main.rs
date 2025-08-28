@@ -23,10 +23,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Some(Commands::Search {
             query,
-            filename,
-            content,
         }) => {
-            search_command(&query, filename, content)?;
+            search_command(&query)?;
         }
         Some(Commands::List { all }) => {
             list_command(all)?;

@@ -47,7 +47,7 @@ pub fn scan_directory(
     let mut files_processed = 0;
     let mut pdfs_found = 0;
     let mut dirs_skipped = 0;
-    let mut pdfs_processed = 0; // Counter for PDFs being processed
+
 
     // Walk the directory tree recursively with walkdir
     for entry in WalkDir::new(path) {
@@ -72,25 +72,7 @@ pub fn scan_directory(
                 // 1.3.1. Get the file metadata
                 let metadata = file_path.metadata()?;
 
-                // 1.3.2. Extract content safely with panic handling
-                pdfs_processed += 1;
-                
-                // Show sub-progress for content extraction
-                let filename = file_path.file_name().unwrap().to_string_lossy();
-                let short_name = if filename.len() > 25 { 
-                    format!("{}...", &filename[..25]) 
-                } else { 
-                    filename.to_string() 
-                };
-                
-                pb.set_message(format!("Scanning for PDFs... (PDF #{}/{}: {})", 
-                    pdfs_processed, pdfs_found + 1, short_name));
-                
-                let content = PdfDatabase::extract_pdf_content(&file_path.to_string_lossy())
-                    .unwrap_or(None);
 
-                // Reset message after extraction
-                pb.set_message("Scanning for PDFs...");
 
                 // 1.3.3. Create PdfEntry
                 let pdf_entry = PdfEntry {
@@ -100,7 +82,6 @@ pub fn scan_directory(
                     size: metadata.len(),
                     modified: DateTime::from(metadata.modified()?),
                     indexed_at: Some(Utc::now()),
-                    content: content,
                 };
 
                 // 1.3.4. Insert the PDF into the database

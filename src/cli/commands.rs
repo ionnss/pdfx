@@ -2,7 +2,7 @@
 
 use crate::database::db::PdfDatabase;
 use crate::helpers::help::{
-    calculate_search_duration, human_readable_size, hyperlink, truncate, yes_no,
+    calculate_search_duration, human_readable_size, hyperlink, truncate,
 }; //shorten_path
 use crate::indexer::scanner::scan_directory;
 use dirs;
@@ -30,8 +30,6 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
 
 pub fn search_command(
     query: &str,
-    search_filename: bool,
-    search_content: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Check if database exists
     let db_path = get_database_path()?;
@@ -44,7 +42,7 @@ pub fn search_command(
         let db = PdfDatabase::open(&db_path)?;
 
         // In search_command
-        let results = db.simple_search(query, search_filename, search_content)?;
+        let results = db.simple_search(query)?;
 
         // Print results
         if results.is_empty() {
@@ -56,9 +54,7 @@ pub fn search_command(
                 query
             );
             println!(
-                "\x1b[34m🚩 filename: {}, content: {}\x1b[0m\n",
-                yes_no(search_filename),
-                yes_no(search_content)
+                "\x1b[34m🚩 filename search: ✅\x1b[0m\n"
             );
             println!(
                 "\x1b[34m⏱️  Search time:\x1b[0m \x1b[1;92m{}ms\x1b[0m\n\n",
@@ -74,6 +70,9 @@ pub fn search_command(
                     hyperlink(&r.path, &r.path)
                     //hyperlink(&shorten_path(&r.path, 40), &r.path)
                 );
+                
+
+                
                 println!("\x1b[34m───────────────────────────────────────────────\x1b[0m"); // separator line
                 println!(); // empty line between documents
             }

@@ -51,22 +51,14 @@ pub enum Commands {
     /// Search indexed PDFs
     ///
     /// Examples:
-    ///   pdfx search "machine learning"     # Search in both filename and content (default)
-    ///   pdfx search "rust" --filename      # Search in filenames only
-    ///   pdfx search "concurrency" --content # Search in content only
+    ///   pdfx search "machine learning"     # Search in filenames
+    ///   pdfx search "rust programming"     # Search in filenames
     ///
-    /// Note: If neither --filename (-f) nor --content (-c) is specified,
-    /// the search will look in both filename and content.
+    /// Note: Search is performed on PDF filenames only.
     #[command(name = "search")]
     Search {
         /// Search query
         query: String,
-        /// Search in filenames only
-        #[arg(long, short = 'f')]
-        filename: bool,
-        /// Search in content only
-        #[arg(long, short = 'c')]
-        content: bool,
     },
 
     /// Show all indexed PDFs
