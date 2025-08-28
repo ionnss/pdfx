@@ -21,7 +21,7 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
 
     // 4. Print success message
     println!(
-        "\nIndexed {} PDFs in {}\n",
+        "\n\x1b[1;92m✅ Successfully indexed\x1b[0m \x1b[1;92m{}\x1b[0m \x1b[34mPDFs in\x1b[0m \x1b[1;92m{}\x1b[0m\n",
         db.count_pdfs()?,
         db_path.display()
     );

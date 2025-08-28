@@ -17,7 +17,7 @@ pub fn scan_directory(
     let count_pb = ProgressBar::new_spinner();
     count_pb.set_style(
         ProgressStyle::default_spinner()
-            .template("{spinner:.green} {msg} {pos}")
+            .template("\x1b[34m{spinner:.green} {msg}\x1b[0m \x1b[1;92m{pos}\x1b[0m")
             .unwrap()
             .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ "),
     );
@@ -38,11 +38,11 @@ pub fn scan_directory(
     let pb = ProgressBar::new(total_files);
     pb.set_style(
         ProgressStyle::default_bar()
-            .template("🔍 {msg} [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}")
+            .template("\x1b[34m🔍 {msg}\x1b[0m [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}")
             .unwrap()
             .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
     );
-    pb.set_message("Scanning for PDFs...");
+    pb.set_message("Indexing PDFs...");
 
     let mut files_processed = 0;
     let mut pdfs_found = 0;
@@ -91,11 +91,17 @@ pub fn scan_directory(
         }
     }
 
-    // Finish progress bar with summary
-    pb.finish_with_message(format!(
-        "✅ Scan complete! {} PDFs found | {} files processed | {} directories skipped\n",
+    // Finish progress bar and print summary on separate line
+    pb.finish_and_clear();
+    
+    // Print beautiful success message
+    println!(
+        "\n\x1b[1;92m✅ Index complete!\x1b[0m"
+    );
+    println!(
+        "\x1b[34m📊 Summary:\x1b[0m \x1b[1;92m{} PDFs found\x1b[0m | \x1b[1;92m{} files processed\x1b[0m | \x1b[1;92m{} directories skipped\x1b[0m\n",
         pdfs_found, files_processed, dirs_skipped
-    ));
+    );
 
     Ok(())
 }
