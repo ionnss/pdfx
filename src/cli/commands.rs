@@ -58,7 +58,7 @@ pub fn search_command(
                 calculate_search_duration(start_time)
             );
             println!(
-                "\x1b[1;92mΣ\x1b[0m\x1b[34m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",
+                "\x1b[1;92m Σ\x1b[0m\x1b[34m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",
                 results.len()
             );
             println!("\n");
