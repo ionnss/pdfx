@@ -20,4 +20,5 @@ pub struct PdfSearchResult {
     pub path: String,
     pub filename: String,
     pub size: u64,
+    pub content: Option<Vec<String>>,
 }

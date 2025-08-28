@@ -84,13 +84,14 @@ impl PdfDatabase {
         if search_filename {
             let sql = "SELECT id, path, filename, size FROM pdfs WHERE filename LIKE ?1";
             let search_pattern = format!("%{}%", query);
-            let mut stmt = self.conn.prepare(&sql)?;
+            let mut stmt = self.conn.prepare(sql)?;
             let pdf_iter = stmt.query_map([&search_pattern], |row| {
                 Ok(PdfSearchResult {
                     id: row.get(0)?,
                     path: row.get(1)?,
                     filename: row.get(2)?,
                     size: row.get(3)?,
+                    content: None,
                 })
             })?;
 
