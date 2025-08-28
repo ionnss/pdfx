@@ -3,14 +3,11 @@ pdfx init                    # Indexes current directory
 pdfx init ~                  # Indexes home directory
 pdfx init ~/Documents        # Indexes specific directory
 
-
 # Search command  
-pdfx search "machine learning"  # Required argument 
-
-# Recent command
-pdfx recent                  # Uses default limit=10
-pdfx recent -l 5             # Short flag
-pdfx recent --limit 20       # Long flag
+pdfx search "machine learning"  # Required argument
+pdfx search "rust programming" --filename   # Search in filenames only
+pdfx search "concurrency" --content         # Search in PDF content only
+pdfx search "async"                         # Search in both (default)
 
 # List command
 pdfx list                   # all=false (default for bool)

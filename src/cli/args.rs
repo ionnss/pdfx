@@ -26,15 +26,11 @@ pub enum Commands {
 
     // Search indexed PDFs
     Search {
-        // Search query
         query: String,
-    },
-
-    // Show recent PDFS
-    Recent {
-        // Number of recent PDFs to show (default:10)
-        #[arg(short, long, default_value = "10")]
-        limit: i32,
+        #[arg(long, short = 'f')]
+        filename: bool, // search filename
+        #[arg(long, short = 'c')]
+        content: bool, // search content
     },
 
     // Show all indexed PDFs
