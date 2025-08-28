@@ -26,16 +26,13 @@
 
 ## ✨ Features
 
+### Work In Progress
+
 - **🚀 Lightning Fast Indexing**: Two-phase scanning with real-time progress tracking - no more waiting for searches
 - **🎯 Smart Database**: SQLite-powered indexing with metadata and content extraction
 - **📊 Zero Duplicates**: Intelligent `INSERT OR REPLACE` prevents duplicate entries during re-indexing  
-- **🛡️ System-Aware**: Gracefully skips protected directories (Photos, Mail, etc.) and continues scanning
-- **🛡️ Robust PDF Handling**: Process-isolated PDF extraction prevents crashes from corrupted files
 - **🧹 Complete Cleanup**: `pdfx cleanup` removes all traces - perfect for uninstalling
 - **💻 Cross-Platform**: Native support for Linux, macOS, and Windows with proper data directories
-- **🎨 Beautiful Progress**: Custom Braille character progress bars (`⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋`) with ETA and speed
-- **📊 Sub-Progress Tracking**: Shows current PDF being processed during indexing
-- **⚡ Instant Commands**: Once indexed, all operations are database-fast (no filesystem scanning)
 
 ---
 
@@ -252,6 +249,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Progress bars powered by [indicatif](https://crates.io/crates/indicatif) with custom Braille characters
 - Directory traversal using [walkdir](https://crates.io/crates/walkdir) for efficient file scanning
 - Date/time handling with [chrono](https://crates.io/crates/chrono)
+- PDF text extraction using [lopdf](https://crates.io/crates/lopdf) for robust content parsing
 
 ---
 
@@ -266,7 +264,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] **Content Extraction** - Robust PDF content extraction with panic protection
 
 ### **🚧 In Progress (v0.2.0)**
-- [ ] **Smart Search** - Full-text search inside indexed PDFs
+- [x] **Smart Search** - Full-text search inside indexed PDFs with context
 - [ ] **List Command** - Display indexed PDFs with filtering
 - [ ] **Recent Command** - Show recently modified PDFs
 
