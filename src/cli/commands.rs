@@ -1,11 +1,13 @@
 // commands.rs
 
 use crate::database::db::PdfDatabase;
+use crate::helpers::help::{
+    calculate_search_duration, human_readable_size, hyperlink, shorten_path, truncate, yes_no,
+};
 use crate::indexer::scanner::scan_directory;
-use crate::helpers::help::{yes_no, human_readable_size, truncate, hyperlink, shorten_path, calculate_search_duration};
-use std::time::Instant;
 use dirs;
 use std::path::Path;
+use std::time::Instant;
 
 pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     // 1. Get database path using dirs crate
@@ -26,48 +28,64 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn search_command(query: &str, search_filename: bool, search_content: bool) -> Result<(), Box<dyn std::error::Error>> {
-    
-    
+pub fn search_command(
+    query: &str,
+    search_filename: bool,
+    search_content: bool,
+) -> Result<(), Box<dyn std::error::Error>> {
     // Check if database exists
     let db_path = get_database_path()?;
     if !db_path.exists() {
         return Err("Database with indexed PDFs not found".into());
-    } else { 
+    } else {
         let start_time = Instant::now();
-        
+
         // Connect to database
         let db = PdfDatabase::open(&db_path)?;
 
         // In search_command
         let results = db.smart_search(query, search_filename, search_content)?;
 
-
         // Print results
         if results.is_empty() {
             println!("❌ No results found for '{}'.", query);
         } else {
             // Header
-            println!("\n\n\x1b[1;94m🔎 Search results for:\x1b[0m \x1b[1;92m{}\x1b[0m\n",query);
-            println!("\x1b[1;94m🚩 filename: {}, content: {}\x1b[0m\n", yes_no(search_filename), yes_no(search_content));
-            println!("\x1b[1;94m⏱️  Search time:\x1b[0m \x1b[1;92m{}ms\x1b[0m\n\n",calculate_search_duration(start_time));
-            
+            println!(
+                "\n\n\x1b[1;94m🔎 Search results for:\x1b[0m \x1b[1;92m{}\x1b[0m\n",
+                query
+            );
+            println!(
+                "\x1b[1;94m🚩 filename: {}, content: {}\x1b[0m\n",
+                yes_no(search_filename),
+                yes_no(search_content)
+            );
+            println!(
+                "\x1b[1;94m⏱️  Search time:\x1b[0m \x1b[1;92m{}ms\x1b[0m\n\n",
+                calculate_search_duration(start_time)
+            );
+
             // Results
             for (i, r) in results.iter().enumerate() {
                 println!("📄 {}. {}", i + 1, truncate(&r.filename, 40));
                 println!("    Size: {}", human_readable_size(r.size));
-                println!("    Path: {}", hyperlink(&shorten_path(&r.path, 40), &r.path));
+                println!(
+                    "    Path: {}",
+                    hyperlink(&shorten_path(&r.path, 40), &r.path)
+                );
                 println!("\x1b[1;94m───────────────────────────────────────────────\x1b[0m"); // separator line
                 println!(); // empty line between documents
             }
-    
-            println!("\x1b[1;92mΣ\x1b[0m\x1b[1;94m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",results.len());
+
+            println!(
+                "\x1b[1;92mΣ\x1b[0m\x1b[1;94m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",
+                results.len()
+            );
         }
     }
 
     Ok(())
 }
-
 
 pub fn list_command(all: bool) -> Result<(), Box<dyn std::error::Error>> {
     // Future: List PDFs from database

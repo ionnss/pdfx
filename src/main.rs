@@ -12,7 +12,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let target_dir = path.unwrap_or_else(|| std::env::current_dir().unwrap());
             init_command(&target_dir)?;
         }
-        Some(Commands::Search { query, filename, content }) => {
+        Some(Commands::Search {
+            query,
+            filename,
+            content,
+        }) => {
             search_command(&query, filename, content)?;
         }
         Some(Commands::List { all }) => {

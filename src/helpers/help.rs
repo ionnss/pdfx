@@ -4,7 +4,11 @@ use std::time::Instant;
 
 // Nested helper functions
 pub fn yes_no(flag: bool) -> &'static str {
-    if flag { "✅" } else { "❌" }
+    if flag {
+        "✅"
+    } else {
+        "❌"
+    }
 }
 
 // Human readable size
@@ -41,7 +45,7 @@ pub fn shorten_path(path: &str, max_len: usize) -> String {
     } else {
         let parts: Vec<&str> = path.split('/').collect();
         if parts.len() > 3 {
-            format!(".../{}/{}", parts[parts.len()-2], parts[parts.len()-1])
+            format!(".../{}/{}", parts[parts.len() - 2], parts[parts.len() - 1])
         } else {
             path.to_string()
         }

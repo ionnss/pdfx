@@ -4,7 +4,6 @@
 use crate::types::{PdfEntry, PdfSearchResult};
 use rusqlite::{params, Connection, Result};
 
-
 // Connection string for the database
 pub struct PdfDatabase {
     conn: Connection,
@@ -66,8 +65,13 @@ impl PdfDatabase {
         Ok(count)
     }
 
-    pub fn smart_search(&self, query: &str, search_filename: bool, search_content: bool) -> Result<Vec<PdfSearchResult>> {
-        // Default - if neither flag is specified, search both 
+    pub fn smart_search(
+        &self,
+        query: &str,
+        search_filename: bool,
+        search_content: bool,
+    ) -> Result<Vec<PdfSearchResult>> {
+        // Default - if neither flag is specified, search both
         let (search_filename, search_content) = if !search_filename && !search_content {
             (true, true)
         } else {
@@ -75,7 +79,7 @@ impl PdfDatabase {
         };
 
         let mut results = Vec::new();
-        
+
         // 1. Search filenames
         if search_filename {
             let sql = "SELECT id, path, filename, size FROM pdfs WHERE filename LIKE ?1";
@@ -100,10 +104,9 @@ impl PdfDatabase {
             // For now, we'll just print a message
             println!("🔍 Content search not implemented yet");
         }
-        
+
         // At this point, you need to return the results from the function.
         // Since your function signature is `-> Result<Vec<PdfEntry>>`, you should return `Ok(results)` at the end.
         Ok(results)
     }
-
 }
