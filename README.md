@@ -4,7 +4,7 @@
   <img src="assets/bg_rc_logo.png" alt="pdfx logo" width="300"/>
   <br><br>
   
-  **🛠️ A lightning-fast terminal-native PDF indexing and search toolkit**
+  **A lightning-fast terminal-native PDF indexing and search toolkit**
   
   [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -24,29 +24,20 @@
 
 ---
 
-## ✨ Features
+## Features
 
-### Work In Progress
-
-- **🚀 Lightning Fast Indexing**: Two-phase scanning with real-time progress tracking - no more waiting for searches
-- **🎯 Smart Database**: SQLite-powered indexing with metadata and content extraction
-- **📊 Zero Duplicates**: Intelligent `INSERT OR REPLACE` prevents duplicate entries during re-indexing  
-- **🧹 Complete Cleanup**: `pdfx cleanup` removes all traces - perfect for uninstalling
-- **💻 Cross-Platform**: Native support for Linux, macOS, and Windows with proper data directories
+- **Fast PDF Indexing**: SQLite-powered database with metadata extraction
+- **Lightning Search**: Instant filename-based search across indexed PDFs
+- **Cross-Platform**: Native support for Linux, macOS, and Windows
+- **Clean UI**: Beautiful progress bars and organized output
+- **Zero Dependencies**: No external system requirements
+- **Smart Cleanup**: Complete data removal with `pdfx cleanup`
 
 ---
 
-## 📦 Installation
+## Installation
 
-### Method 1: Install from GitHub (Recommended)
-
-Make sure you have [Rust](https://rustup.rs/) installed, then run:
-
-```bash
-cargo install --git https://github.com/ionnss/pdfx
-```
-
-### Method 2: Build from Source
+### From Source
 
 ```bash
 # Clone the repository
@@ -57,89 +48,51 @@ cd pdfx
 cargo install --path .
 ```
 
-### Method 3: Download Binary (Coming Soon)
-
-Pre-built binaries for major platforms will be available in the [Releases](https://github.com/ionnss/pdfx/releases) section.
-
-### Optional: Install pdftotext for Better Content Extraction
-
-For enhanced PDF content extraction (optional), install `pdftotext` from Poppler:
+### From GitHub
 
 ```bash
-# macOS
-brew install poppler
-
-# Ubuntu/Debian
-sudo apt-get install poppler-utils
-
-# Windows
-# Download from: https://poppler.freedesktop.org/
+cargo install --git https://github.com/ionnss/pdfx
 ```
-
-Without `pdftotext`, pdfx will still work but with limited content extraction capabilities.
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Basic Commands
 
 ```bash
-# Initialize PDF index (one-time setup)
+# Initialize PDF index
 pdfx init                    # Index current directory
 pdfx init ~/Documents        # Index specific directory
 pdfx init ~                  # Index entire home directory
 
 # Search indexed PDFs
-pdfx search "machine learning"   # Search for keyword
-
-# List indexed PDFs
-pdfx list                    # Show all indexed PDFs
-pdfx list -a                 # Show all with details
-
-# Show recent PDFs
-pdfx recent                  # Show 10 most recent
-pdfx recent -l 20            # Show 20 most recent
+pdfx search "machine learning"   # Search for keyword in filenames
 
 # Clean up
 pdfx cleanup                 # Remove all indexed data
 ```
 
-### Workflow
+### Workflow Example
 
 ```bash
 # 1. First time setup - index your PDFs
 pdfx init ~/Documents
-# ⠋ Counting files... 10847
-# 🔍 Scanning for PDFs... (PDF #1/170: document.pdf) [00:00:03] [⣿⣿⣿⣿⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋    ] 1247/2500 files | 400/s | ETA: 00:03
 # ✅ Scan complete! 170 PDFs found | 2500 files processed | 25 directories skipped
 # Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 
 # 2. Search your indexed PDFs instantly
 pdfx search "rust programming"
 
-# 3. List recent PDFs
-pdfx recent -l 5
-
-# 4. When you're done (optional cleanup)
+# 3. When you're done (optional cleanup)
 pdfx cleanup
-```
-
-### Sample Output
-
-```
-⠋ Counting files... 10847
-🔍 Scanning for PDFs... [00:00:03] [⣿⣿⣿⣿⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋    ] 1247/2500 files | 400/s | ETA: 00:03
-✅ Scan complete! 170 PDFs found | 2500 files processed | 25 directories skipped
-
-Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 ```
 
 ---
 
-## 🗄️ Database & Storage
+## Database & Storage
 
-### **Where Your Data Lives**
+### Where Your Data Lives
 ```bash
 # macOS
 ~/Library/Application Support/pdfx/db.sqlite
@@ -151,21 +104,14 @@ Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 %APPDATA%/pdfx/db.sqlite
 ```
 
-### **Database Schema**
-Your PDFs are stored with:
-- **Path & Filename** - Full file location and name
-- **Size & Modified Date** - File metadata for change detection
-- **Indexed Timestamp** - When the PDF was added to database
-- **Unique Path Constraint** - Prevents duplicate entries
-
-### **Privacy & Security**
-- **Local Storage Only** - No cloud, no tracking, no data sharing
-- **SQLite Database** - Industry-standard, portable format
-- **Complete Cleanup** - `pdfx cleanup` removes all traces
+### Privacy & Security
+- **Local Storage Only**: No cloud, no tracking, no data sharing
+- **SQLite Database**: Industry-standard, portable format
+- **Complete Cleanup**: `pdfx cleanup` removes all traces
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - **Rust**: 1.70 or later
 - **Operating System**: Linux, macOS, or Windows
@@ -173,7 +119,31 @@ Your PDFs are stored with:
 
 ---
 
-## 🤝 Contributing
+## Development
+
+### Setup
+
+```bash
+git clone https://github.com/ionnss/pdfx.git
+cd pdfx
+cargo build
+cargo run -- --help
+```
+
+### Project Structure
+
+```
+src/
+├── cli/          # Command-line interface
+├── database/     # SQLite database operations
+├── indexer/      # PDF file discovery and indexing
+├── helpers/      # Utility functions
+└── types.rs      # Core data structures
+```
+
+---
+
+## Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -183,20 +153,11 @@ We welcome contributions! Here's how you can help:
 4. **Push** to the branch (`git push origin feature/amazing-feature`)
 5. **Open** a Pull Request
 
-### Development Setup
-
-```bash
-git clone https://github.com/ionnss/pdfx.git
-cd pdfx
-cargo build
-cargo run
-```
-
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### **Common Issues**
+### Common Issues
 
 **Q: "Permission denied" errors during scanning**
 ```bash
@@ -210,12 +171,6 @@ pdfx cleanup    # Remove database and start fresh
 pdfx init       # Rebuild index
 ```
 
-**Q: Progress bar not showing or looks broken**
-```bash
-# Ensure your terminal supports Unicode/UTF-8
-# Try a modern terminal like: iTerm2, Terminal.app, or Windows Terminal
-```
-
 **Q: Where is my data stored?**
 ```bash
 # View database location after running pdfx init
@@ -225,60 +180,36 @@ pdfx init       # Rebuild index
 
 ---
 
-## 🐛 Issues & Bug Reports
+## Roadmap
 
-Found a bug? Have a feature request? Please check the [Issues](https://github.com/ionnss/pdfx/issues) page first, then feel free to open a new issue with:
+### Current Status (v0.1.0)
+- ✅ **PDF Indexing**: SQLite-based PDF database with metadata
+- ✅ **Filename Search**: Fast, case-insensitive filename search
+- ✅ **Cross-Platform**: Works on Linux, macOS, and Windows
+- ✅ **Clean UI**: Progress bars and organized output
 
-- **System information** (OS, Rust version)
-- **Steps to reproduce** the issue
-- **Expected vs actual behavior**
+### Planned Features
+- 📋 **List Command**: Display indexed PDFs with filtering
+- 📅 **Recent Command**: Show recently modified PDFs
+- 🔍 **Advanced Search**: Filter by size, date, path
+- 📊 **Statistics**: Show indexing statistics and storage usage
+
+See [FUTURE.md](FUTURE.md) for detailed roadmap and feature plans.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- Built with [Rust](https://www.rust-lang.org/) 🦀
-- Database powered by [rusqlite](https://crates.io/crates/rusqlite) for fast SQLite operations
-- CLI interface built with [clap](https://crates.io/crates/clap) for beautiful argument parsing
-- Progress bars powered by [indicatif](https://crates.io/crates/indicatif) with custom Braille characters
-- Directory traversal using [walkdir](https://crates.io/crates/walkdir) for efficient file scanning
-- Date/time handling with [chrono](https://crates.io/crates/chrono)
-- PDF text extraction using [lopdf](https://crates.io/crates/lopdf) for robust content parsing
-
----
-
-## 🗺️ Roadmap
-
-### **✅ Completed (v0.1.0)**
-- [x] **PDF Indexing** - SQLite-based PDF database with metadata
-- [x] **Beautiful Progress Bars** - Braille character progress indicators  
-- [x] **Duplicate Prevention** - Smart re-indexing without duplicates
-- [x] **Clean Uninstall** - Complete data cleanup with `pdfx cleanup`
-- [x] **Cross-Platform Support** - Works on Linux, macOS, and Windows
-- [x] **Content Extraction** - Robust PDF content extraction with panic protection
-
-### **🚧 In Progress (v0.2.0)**
-- [x] **Smart Search** - Full-text search inside indexed PDFs with context
-- [ ] **List Command** - Display indexed PDFs with filtering
-- [ ] **Recent Command** - Show recently modified PDFs
-
-### **🔮 Future (v0.3.0+)**
-- [ ] **Interactive Dashboard** - Terminal UI for PDF analytics
-- [ ] **Duplicate Detection** - Find duplicate PDFs by content hash
-- [ ] **Export Options** - JSON/CSV output formats
-- [ ] **AI Integration** - PDF summarization and analysis (will re-add rust-bert when needed)
-- [ ] **File Watching** - Auto-update index when PDFs change
-
----
-
-<div align="center">
-  <strong>Made with ❤️ and Rust</strong>
-  <br>
-  <a href="https://github.com/ionnss/pdfx">⭐ Star this project if you find it useful!</a>
-</div>
+Built with excellence using:
+- **[Rust](https://rust-lang.org)** - Systems programming language
+- **[rusqlite](https://crates.io/crates/rusqlite)** - SQLite database operations
+- **[clap](https://crates.io/crates/clap)** - Command-line argument parsing
+- **[indicatif](https://crates.io/crates/indicatif)** - Progress bars and spinners
+- **[walkdir](https://crates.io/crates/walkdir)** - Recursive directory traversal
+- **[chrono](https://crates.io/crates/chrono)** - Date and time handling
