@@ -38,7 +38,7 @@ pub fn scan_directory(
     let pb = ProgressBar::new(total_files);
     pb.set_style(
         ProgressStyle::default_bar()
-            .template("\x1b[34m🔍 {msg}\x1b[0m [{elapsed_precise}] [{wide_bar:.cyan/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}")
+            .template("\x1b[34m🔍 {msg}\x1b[0m [{elapsed_precise}] [{wide_bar:.blue/blue}] {pos}/{len} files | {per_sec} | ETA: {eta}")
             .unwrap()
             .progress_chars("⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋ ")
     );
@@ -99,7 +99,7 @@ pub fn scan_directory(
         "\n\x1b[1;92m✅ Index complete!\x1b[0m"
     );
     println!(
-        "\x1b[34m📊 Summary:\x1b[0m \x1b[1;92m{} PDFs found\x1b[0m | \x1b[1;92m{} files processed\x1b[0m | \x1b[1;92m{} directories skipped\x1b[0m\n",
+        "\n\x1b[34m📊 Summary:\x1b[0m \x1b[1;92m{} PDFs found\x1b[0m | \x1b[1;92m{} files processed\x1b[0m | \x1b[1;92m{} directories skipped\x1b[0m\n",
         pdfs_found, files_processed, dirs_skipped
     );
 

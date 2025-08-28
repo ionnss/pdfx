@@ -21,7 +21,7 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
 
     // 4. Print success message
     println!(
-        "\n\x1b[1;92m✅ Successfully indexed\x1b[0m \x1b[1;92m{}\x1b[0m \x1b[34mPDFs in\x1b[0m \x1b[1;92m{}\x1b[0m\n",
+        "\x1b[1;92m✅ Successfully indexed\x1b[0m \x1b[1;92m{}\x1b[0m \x1b[34mPDFs in\x1b[0m \x1b[1;92m{}\x1b[0m\n",
         db.count_pdfs()?,
         db_path.display()
     );
@@ -54,12 +54,14 @@ pub fn search_command(
                 query
             );
             println!(
-                "\x1b[34m🚩 filename search: ✅\x1b[0m\n"
-            );
-            println!(
-                "\x1b[34m⏱️  Search time:\x1b[0m \x1b[1;92m{}ms\x1b[0m\n\n",
+                "\x1b[34m⏱️  Search time:\x1b[0m \x1b[1;92m{}ms\x1b[0m\n",
                 calculate_search_duration(start_time)
             );
+            println!(
+                "\x1b[1;92mΣ\x1b[0m\x1b[34m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",
+                results.len()
+            );
+            println!("\n");
 
             // Results
             for (i, r) in results.iter().enumerate() {
@@ -76,11 +78,6 @@ pub fn search_command(
                 println!("\x1b[34m───────────────────────────────────────────────\x1b[0m"); // separator line
                 println!(); // empty line between documents
             }
-
-            println!(
-                "\x1b[1;92mΣ\x1b[0m\x1b[34m Total results:\x1b[0m \x1b[1;92m{}\x1b[0m",
-                results.len()
-            );
         }
     }
 
