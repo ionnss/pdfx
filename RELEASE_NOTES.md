@@ -37,6 +37,7 @@ We're excited to introduce **pdfx** - a lightning-fast terminal-native PDF index
 - **📊 Zero Duplicates**: Intelligent `INSERT OR REPLACE` prevents duplicate entries
 - **🛡️ System-Aware**: Gracefully skips protected directories (Photos, System, etc.)
 - **🧹 Clean Uninstall**: Complete data removal with `pdfx cleanup`
+- **🔒 Security Fixed**: Removed unused `rust-bert` dependency to resolve `protobuf` vulnerability
 
 ### **🖥️ Commands Available**
 ```bash

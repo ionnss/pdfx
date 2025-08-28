@@ -254,7 +254,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] **Interactive Dashboard** - Terminal UI for PDF analytics
 - [ ] **Duplicate Detection** - Find duplicate PDFs by content hash
 - [ ] **Export Options** - JSON/CSV output formats
-- [ ] **AI Integration** - PDF summarization and analysis
+- [ ] **AI Integration** - PDF summarization and analysis (will re-add rust-bert when needed)
 - [ ] **File Watching** - Auto-update index when PDFs change
 
 ---

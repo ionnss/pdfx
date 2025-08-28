@@ -44,7 +44,7 @@ pub fn search_command(
         let db = PdfDatabase::open(&db_path)?;
 
         // In search_command
-        let results = db.smart_search(query, search_filename, search_content)?;
+        let results = db.simple_search(query, search_filename, search_content)?;
 
         // Print results
         if results.is_empty() {

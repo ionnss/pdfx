@@ -65,7 +65,7 @@ impl PdfDatabase {
         Ok(count)
     }
 
-    pub fn smart_search(
+    pub fn simple_search(
         &self,
         query: &str,
         search_filename: bool,
