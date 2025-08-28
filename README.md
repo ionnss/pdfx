@@ -27,12 +27,14 @@
 ## ✨ Features
 
 - **🚀 Lightning Fast Indexing**: Two-phase scanning with real-time progress tracking - no more waiting for searches
-- **🎯 Smart Database**: SQLite-powered indexing with metadata extraction (path, size, modified date)
+- **🎯 Smart Database**: SQLite-powered indexing with metadata and content extraction
 - **📊 Zero Duplicates**: Intelligent `INSERT OR REPLACE` prevents duplicate entries during re-indexing  
 - **🛡️ System-Aware**: Gracefully skips protected directories (Photos, Mail, etc.) and continues scanning
+- **🛡️ Robust PDF Handling**: Process-isolated PDF extraction prevents crashes from corrupted files
 - **🧹 Complete Cleanup**: `pdfx cleanup` removes all traces - perfect for uninstalling
 - **💻 Cross-Platform**: Native support for Linux, macOS, and Windows with proper data directories
 - **🎨 Beautiful Progress**: Custom Braille character progress bars (`⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋`) with ETA and speed
+- **📊 Sub-Progress Tracking**: Shows current PDF being processed during indexing
 - **⚡ Instant Commands**: Once indexed, all operations are database-fast (no filesystem scanning)
 
 ---
@@ -61,6 +63,23 @@ cargo install --path .
 ### Method 3: Download Binary (Coming Soon)
 
 Pre-built binaries for major platforms will be available in the [Releases](https://github.com/ionnss/pdfx/releases) section.
+
+### Optional: Install pdftotext for Better Content Extraction
+
+For enhanced PDF content extraction (optional), install `pdftotext` from Poppler:
+
+```bash
+# macOS
+brew install poppler
+
+# Ubuntu/Debian
+sudo apt-get install poppler-utils
+
+# Windows
+# Download from: https://poppler.freedesktop.org/
+```
+
+Without `pdftotext`, pdfx will still work but with limited content extraction capabilities.
 
 ---
 
@@ -95,7 +114,7 @@ pdfx cleanup                 # Remove all indexed data
 # 1. First time setup - index your PDFs
 pdfx init ~/Documents
 # ⠋ Counting files... 10847
-# 🔍 Scanning for PDFs... [00:00:03] [⣿⣿⣿⣿⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋    ] 1247/2500 files | 400/s | ETA: 00:03
+# 🔍 Scanning for PDFs... (PDF #1/170: document.pdf) [00:00:03] [⣿⣿⣿⣿⣿⣷⣯⣟⡿⢿⠿⠟⠛⠋    ] 1247/2500 files | 400/s | ETA: 00:03
 # ✅ Scan complete! 170 PDFs found | 2500 files processed | 25 directories skipped
 # Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 
@@ -244,9 +263,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] **Duplicate Prevention** - Smart re-indexing without duplicates
 - [x] **Clean Uninstall** - Complete data cleanup with `pdfx cleanup`
 - [x] **Cross-Platform Support** - Works on Linux, macOS, and Windows
+- [x] **Content Extraction** - Robust PDF content extraction with panic protection
 
 ### **🚧 In Progress (v0.2.0)**
-- [ ] **Smart Search** - Full-text search inside indexed PDFs  
+- [ ] **Smart Search** - Full-text search inside indexed PDFs
 - [ ] **List Command** - Display indexed PDFs with filtering
 - [ ] **Recent Command** - Show recently modified PDFs
 

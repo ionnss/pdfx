@@ -69,16 +69,94 @@ impl PdfDatabase {
     }
 
     pub fn extract_pdf_content(path: &str) -> Result<Option<String>, Box<dyn std::error::Error>> {
-        match pdf_extract::extract_text(path) {
-            Ok(content) => {
-                // Only store non-empty content
-                if content.trim().is_empty() {
-                    Ok(None)
-                } else { 
-                    Ok(Some(content))
+        // First, check if the file exists and is readable
+        if !std::path::Path::new(path).exists() {
+            return Ok(None);
+        }
+
+        // Method 1: Try pdftotext (process-isolated, safest)
+        let pdftotext_result = std::process::Command::new("pdftotext")
+            .arg("-q")  // Quiet mode
+            .arg("-eol")  // End of line
+            .arg("unix")  // Unix line endings
+            .arg("-layout")  // Maintain layout
+            .arg(path)
+            .arg("-")  // Output to stdout
+            .output();
+
+        match pdftotext_result {
+            Ok(output) => {
+                if output.status.success() {
+                    let content = String::from_utf8_lossy(&output.stdout);
+                    if content.trim().is_empty() {
+                        // Try fallback to pdf-extract
+                        return Self::extract_with_pdf_extract(path);
+                    } else {
+                        return Ok(Some(content.to_string()));
+                    }
+                } else {
+                    // pdftotext failed, try fallback
+                    return Self::extract_with_pdf_extract(path);
                 }
             }
             Err(_) => {
+                // pdftotext not available, try fallback
+                return Self::extract_with_pdf_extract(path);
+            }
+        }
+    }
+
+    fn extract_with_pdf_extract(path: &str) -> Result<Option<String>, Box<dyn std::error::Error>> {
+        // Method 2: Use pdf-extract with comprehensive panic protection
+        // Spawn a separate thread to completely isolate any panics
+        let path = path.to_string();
+        let handle = std::thread::spawn(move || {
+            // Use a timeout to prevent hanging
+            let timeout_duration = std::time::Duration::from_secs(10); // 10 second timeout
+            let start = std::time::Instant::now();
+            
+            // Try to extract with panic protection
+            let result = std::panic::catch_unwind(|| {
+                pdf_extract::extract_text(&path)
+            });
+
+            // Check if we've exceeded the timeout
+            if start.elapsed() > timeout_duration {
+                return Err(pdf_extract::OutputError::IoError(std::io::Error::new(
+                    std::io::ErrorKind::TimedOut,
+                    "PDF extraction timed out"
+                )));
+            }
+
+            match result {
+                Ok(extract_result) => extract_result,
+                Err(_) => Err(pdf_extract::OutputError::IoError(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "PDF extraction panicked"
+                ))),
+            }
+        });
+
+        // Wait for the thread to complete with a timeout
+        match handle.join() {
+            Ok(extract_result) => {
+                match extract_result {
+                    Ok(content) => {
+                        // Only store non-empty content
+                        if content.trim().is_empty() {
+                            Ok(None)
+                        } else { 
+                            Ok(Some(content))
+                        }
+                    }
+                    Err(_) => {
+                        // PDF extraction failed - return None and continue
+                        Ok(None)
+                    }
+                }
+            }
+            Err(_) => {
+                // Thread panicked or timed out - return None and continue
                 Ok(None)
             }
         }

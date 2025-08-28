@@ -38,19 +38,21 @@ pub fn hyperlink(text: &str, path: &str) -> String {
     format!("\x1b]8;;file://{}\x07{}\x1b]8;;\x07", path, text)
 }
 
-// Shorten path
-pub fn shorten_path(path: &str, max_len: usize) -> String {
-    if path.len() <= max_len {
-        path.to_string()
-    } else {
-        let parts: Vec<&str> = path.split('/').collect();
-        if parts.len() > 3 {
-            format!(".../{}/{}", parts[parts.len() - 2], parts[parts.len() - 1])
-        } else {
-            path.to_string()
-        }
-    }
-}
+// /// Shorten a file path for display purposes.
+// /// If the path is longer than `max_len`, it will be shortened to show only the last two components,
+// /// prefixed with ".../". Otherwise, the original path is returned.
+// // pub fn shorten_path(path: &str, max_len: usize) -> String {
+// //     if path.len() <= max_len {
+// //         path.to_string()
+// //     } else {
+// //         let parts: Vec<&str> = path.split('/').collect();
+// //         if parts.len() > 3 {
+// //             format!(".../{}/{}", parts[parts.len() - 2], parts[parts.len() - 1])
+// //         } else {
+// //             path.to_string()
+// //         }
+// //     }
+// // }
 
 // Calculate search duration
 pub fn calculate_search_duration(start_time: Instant) -> u64 {

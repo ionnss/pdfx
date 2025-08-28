@@ -2,8 +2,8 @@
 
 use crate::database::db::PdfDatabase;
 use crate::helpers::help::{
-    calculate_search_duration, human_readable_size, hyperlink, shorten_path, truncate, yes_no,
-};
+    calculate_search_duration, human_readable_size, hyperlink, truncate, yes_no,
+}; //shorten_path
 use crate::indexer::scanner::scan_directory;
 use dirs;
 use std::path::Path;
@@ -71,7 +71,8 @@ pub fn search_command(
                 println!("    Size: {}", human_readable_size(r.size));
                 println!(
                     "    Path: {}",
-                    hyperlink(&shorten_path(&r.path, 40), &r.path)
+                    hyperlink(&r.path, &r.path)
+                    //hyperlink(&shorten_path(&r.path, 40), &r.path)
                 );
                 println!("\x1b[34m───────────────────────────────────────────────\x1b[0m"); // separator line
                 println!(); // empty line between documents
