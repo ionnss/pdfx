@@ -7,6 +7,7 @@ use chrono::{DateTime, Utc};
 use indicatif::{ProgressBar, ProgressStyle};
 use std::path::Path;
 use walkdir::WalkDir;
+use std::panic;
 
 // function to scan a directory for PDF files
 pub fn scan_directory(
@@ -71,7 +72,12 @@ pub fn scan_directory(
                 // 1.3.1. Get the file metadata
                 let metadata = file_path.metadata()?;
 
-                // 1.3.2. Create PdfEntry
+                // 1.3.2. Extract content safely with panic handling
+                let content = panic::catch_unwind(|| {
+                    PdfDatabase::extract_pdf_content(&file_path.to_string_lossy())
+                }).unwrap_or(Ok(None));
+
+                // 1.3.3. Create PdfEntry
                 let pdf_entry = PdfEntry {
                     id: None,
                     path: file_path.to_string_lossy().to_string(),
@@ -79,6 +85,7 @@ pub fn scan_directory(
                     size: metadata.len(),
                     modified: DateTime::from(metadata.modified()?),
                     indexed_at: Some(Utc::now()),
+                    content: content.unwrap_or(None),
                 };
 
                 // 1.3.4. Insert the PDF into the database

@@ -4,6 +4,7 @@
 use crate::types::{PdfEntry, PdfSearchResult};
 use rusqlite::{params, Connection, Result};
 
+ 
 // Connection string for the database
 pub struct PdfDatabase {
     conn: Connection,
@@ -22,7 +23,8 @@ impl PdfDatabase {
                 filename TEXT NOT NULL,
                 size INTEGER NOT NULL,
                 modified DATETIME NOT NULL,
-                indexed_at DATETIME NOT NULL
+                indexed_at DATETIME NOT NULL,
+                content TEXT
             )",
             [],
         )?;
@@ -35,14 +37,15 @@ impl PdfDatabase {
         // Use INSERT OR REPLACE to handle duplicates
         // This will update the entry if path already exists
         self.conn.execute(
-            "INSERT OR REPLACE INTO pdfs (path, filename, size, modified, indexed_at)
-            VALUES (?, ?, ?, ?, ?)",
+            "INSERT OR REPLACE INTO pdfs (path, filename, size, modified, indexed_at, content)
+            VALUES (?, ?, ?, ?, ?, ?)",
             params![
                 pdf.path,
                 pdf.filename,
                 pdf.size as i64,
                 pdf.modified.to_rfc3339(),
                 pdf.indexed_at.unwrap().to_rfc3339(),
+                pdf.content.as_deref(),
             ],
         )?;
 
@@ -64,6 +67,23 @@ impl PdfDatabase {
         // 2. Return the count
         Ok(count)
     }
+
+    pub fn extract_pdf_content(path: &str) -> Result<Option<String>, Box<dyn std::error::Error>> {
+        match pdf_extract::extract_text(path) {
+            Ok(content) => {
+                // Only store non-empty content
+                if content.trim().is_empty() {
+                    Ok(None)
+                } else { 
+                    Ok(Some(content))
+                }
+            }
+            Err(_) => {
+                Ok(None)
+            }
+        }
+    }
+
 
     pub fn simple_search(
         &self,
@@ -102,8 +122,7 @@ impl PdfDatabase {
 
         // 2. Search content (placeholder for now)
         if search_content {
-            // For now, we'll just print a message
-            println!("🔍 Content search not implemented yet");
+            
         }
 
         // At this point, you need to return the results from the function.

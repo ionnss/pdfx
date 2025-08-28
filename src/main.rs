@@ -5,6 +5,15 @@ use pdfx::cli::args::{Cli, Commands};
 use pdfx::cli::commands::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Display ASCII art
+    println!(
+        "\x1b[34m
+░█▀█░█▀▄░█▀▀░█░█
+░█▀▀░█░█░█▀▀░▄▀▄
+░▀░░░▀▀░░▀░░░▀░▀                                       
+\x1b[0m"
+    );
+
     let cli = Cli::parse();
 
     match cli.command {
