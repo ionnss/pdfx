@@ -93,7 +93,7 @@ pdfx init ~/Documents
 
 #✅ Index complete!
 #📊 Summary: 176 PDFs found | 722497 files processed | 122 directories skipped
-#✅ Successfully indexed 176 PDFs in /Users/ions/Library/Application Support/pdfx/db.sqlite
+#✅ Successfully indexed 176 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 
 
 # 2. Browse your PDF library
