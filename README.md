@@ -88,8 +88,13 @@ pdfx cleanup                 # Remove all indexed data
 ```bash
 # 1. First time setup - index your PDFs
 pdfx init ~/Documents
-# ✅ Scan complete! 170 PDFs found | 2500 files processed | 25 directories skipped
-# Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
+#⠋ Counting⠠ Counting files... 221400
+#🔍 Indexing PDFs... [00:00:04] [⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿           ] 374539/722498 files | 90,889.0426/s | ETA: 4s
+
+#✅ Index complete!
+#📊 Summary: 176 PDFs found | 722497 files processed | 122 directories skipped
+#✅ Successfully indexed 176 PDFs in /Users/ions/Library/Application Support/pdfx/db.sqlite
+
 
 # 2. Browse your PDF library
 pdfx list
