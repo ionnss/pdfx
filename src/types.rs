@@ -1,8 +1,8 @@
 // types.rs
 
 // imports
-use serde::{Serialize, Deserialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 // Pdf data structure
 #[derive(Debug)]

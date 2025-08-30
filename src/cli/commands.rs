@@ -1,9 +1,11 @@
 // commands.rs
 
 use crate::database::db::PdfDatabase;
-use crate::helpers::help::{calculate_search_duration, human_readable_size, hyperlink, truncate, get_downloads_path}; //shorten_path
-use crate::indexer::scanner::scan_directory;
 use crate::export::exporter::Exporters;
+use crate::helpers::help::{
+    calculate_search_duration, get_downloads_path, human_readable_size, hyperlink, truncate,
+}; //shorten_path
+use crate::indexer::scanner::scan_directory;
 use dirs;
 use std::path::Path;
 use std::time::Instant;
@@ -114,7 +116,7 @@ pub fn export_command(format: Option<&str>) -> Result<(), Box<dyn std::error::Er
     if !db_path.exists() {
         return Err("Database with indexed PDFs not found. Run 'pdfx init' first.".into());
     }
-    
+
     let db = PdfDatabase::open(&db_path)?;
     let export_path = get_downloads_path()?;
     let export_content = db.get_all_pdfs()?;
@@ -129,8 +131,12 @@ pub fn export_command(format: Option<&str>) -> Result<(), Box<dyn std::error::Er
         None => vec!["json", "csv", "markdown", "yaml", "html"],
     };
 
-    println!("Exporting {} PDFs to {}", export_content.len(), export_path.display());
-    
+    println!(
+        "Exporting {} PDFs to {}",
+        export_content.len(),
+        export_path.display()
+    );
+
     // Generate each format
     for fmt in formats_to_export {
         match fmt {
@@ -183,5 +189,3 @@ pub fn cleanup_command() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-

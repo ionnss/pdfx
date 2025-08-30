@@ -68,8 +68,7 @@ pub enum Commands {
     ///   pdfx list -a                # Show all PDFs with details
     ///   pdfx list --all             # Same as -a flag
     #[command(name = "list")]
-    List {
-    },
+    List {},
 
     /// Export indexed PDFs to downloads directory
     ///
@@ -92,7 +91,6 @@ pub enum Commands {
         ///   pdfx export --format html,pdf    # Export to html and pdf format
         #[arg(short, long)]
         format: Option<String>,
-
     },
 
     /// Clean up pdfx data and database

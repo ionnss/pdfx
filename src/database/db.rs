@@ -106,9 +106,9 @@ impl PdfDatabase {
                     )
                 })?
                 .with_timezone(&Utc);
-            
+
             let size: u64 = row.get(3)?;
-            
+
             Ok(PdfListResult {
                 id: row.get(0)?,
                 path: row.get(1)?,
@@ -130,10 +130,10 @@ impl PdfDatabase {
         // Helper function to get database path in user's data directory
         let data_dir = dirs::data_dir().expect("Failed to get data directory");
         let pdfx_dir = data_dir.join("pdfx");
-    
+
         // Create directory if it doesn't exist
         std::fs::create_dir_all(&pdfx_dir)?;
-    
+
         let db_path = pdfx_dir.join("db.sqlite");
         Ok(db_path)
     }

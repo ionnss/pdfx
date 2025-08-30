@@ -24,12 +24,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(Commands::Search { query }) => {
             search_command(&query)?;
         }
-        Some(Commands::List {  }) => {
+        Some(Commands::List {}) => {
             list_command()?;
         }
         Some(Commands::Export { format }) => {
             export_command(format.as_deref())?;
-        } 
+        }
         Some(Commands::Cleanup) => {
             cleanup_command()?;
         }

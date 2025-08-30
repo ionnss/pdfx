@@ -1,8 +1,8 @@
 // helper.rs
 
-use std::time::Instant;
-use std::path::PathBuf;
 use dirs;
+use std::path::PathBuf;
+use std::time::Instant;
 
 // Nested helper functions
 pub fn yes_no(flag: bool) -> &'static str {
@@ -70,4 +70,4 @@ pub fn get_downloads_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
     Ok(export_dir)
 }
 
-// 
+//
