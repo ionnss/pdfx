@@ -1,5 +1,75 @@
 # Release Notes
 
+## v0.2.0 - List & Export Features 📋  
+*Released: January 2025*
+
+### 🎉 **Major Feature Release**
+
+We're excited to announce **pdfx v0.2.0** with powerful new list and export capabilities! This release transforms pdfx from a simple indexer into a comprehensive PDF library management tool.
+
+### ✨ **What's New**
+
+#### **📋 List Command**
+- **📄 Browse All PDFs**: Display all indexed PDFs with detailed information
+- **📊 Rich Details**: Shows filename, size, path, and modification date
+- **🎨 Beautiful Formatting**: Color-coded output with hyperlinks and progress indicators
+- **📏 Human-Readable Sizes**: File sizes displayed in KB, MB, GB format
+- **🔗 Clickable Paths**: Terminal hyperlinks for easy file access
+
+#### **📤 Export Command**
+- **🔄 Multiple Formats**: Export to JSON, CSV, Markdown, YAML, and HTML
+- **📁 Smart Location**: Exports to Downloads folder by default
+- **⚙️ Format Selection**: Choose specific formats with `--format` flag
+- **📊 Complete Metadata**: Includes all PDF information in exports
+- **🎯 Batch Export**: Export all formats at once or select specific ones
+
+#### **🔧 Technical Improvements**
+- **📦 Enhanced Data Structures**: Added `size_human` field for consistent formatting
+- **🏗️ Modular Architecture**: New `src/export/` module for clean separation
+- **📝 Better Documentation**: Comprehensive README updates with examples
+- **🎨 Improved CLI**: Better help text and command descriptions
+
+### **🖥️ New Commands Available**
+```bash
+pdfx list                    # Display all indexed PDFs with details
+pdfx export                  # Export all formats to Downloads folder
+pdfx export --format json    # Export only JSON format
+pdfx export --format csv,yaml # Export multiple specific formats
+```
+
+### **📊 Export Formats**
+- **JSON**: Machine-readable format with full metadata
+- **CSV**: Spreadsheet-compatible format for data analysis  
+- **Markdown**: Human-readable format with tables
+- **YAML**: Structured format for configuration files
+- **HTML**: Web-ready format for sharing online
+
+### **🚀 Getting Started with New Features**
+
+1. **List your PDFs**:
+   ```bash
+   pdfx list
+   # 📋 All Indexed PDFs
+   # 📊 Total: 170 PDFs
+   # 📄 1. The Rust Programming Language.pdf
+   #     Size: 14.37 MB
+   #     Path: /Users/user/Documents/books/rust.pdf
+   ```
+
+2. **Export your library**:
+   ```bash
+   pdfx export
+   # Exporting 170 PDFs to /Users/user/Downloads/pdfx_exports
+   #   ✅ Generated pdfs.json
+   #   ✅ Generated pdfs.csv
+   #   ✅ Generated pdfs.md
+   #   ✅ Generated pdfs.yaml
+   #   ✅ Generated pdfs.html
+   # 🎉 Export complete!
+   ```
+
+---
+
 ## v0.1.0 - Initial Release 🚀  
 *Released: January 2025*
 
@@ -77,20 +147,26 @@ pdfx cleanup            # Complete data cleanup and uninstall
 
 ## 🗺️ **Roadmap**
 
-### **v0.2.0 - Search & Discovery** *(Next Release)*
+### **v0.2.0 - List & Export Features** *(✅ Completed)*
+- **✅ List Command**: Display and filter indexed PDFs with sorting options
+- **✅ Export Command**: Export to multiple formats (JSON, CSV, Markdown, YAML, HTML)
+- **✅ Human-Readable Sizes**: Consistent file size formatting across all outputs
+- **✅ Downloads Integration**: Smart export location to user's Downloads folder
+- **✅ Format Selection**: Choose specific export formats with CLI flags
+
+### **v0.3.0 - Search & Discovery** *(Next Release)*
 - **🔍 Search Implementation**: Full-text search through indexed PDFs
-- **📋 List Command**: Display and filter indexed PDFs with sorting options
 - **📅 Recent Command**: Show recently modified PDFs with timestamps
 - **🎯 Enhanced Filtering**: Search by file size, modification date, path patterns
 - **📊 Statistics**: Show indexing statistics and storage usage
 
-### **v0.3.0 - Content Intelligence** *(Future)*
+### **v0.4.0 - Content Intelligence** *(Future)*
 - **📄 PDF Content Extraction**: Index text content for full-text search
 - **🔍 Advanced Search**: Search inside PDF content, not just filenames  
 - **🏷️ Auto-Tagging**: Automatic categorization based on content
 - **📈 Analytics Dashboard**: Visual statistics and insights
 
-### **v0.4.0 - AI Integration** *(Vision)*
+### **v0.5.0 - AI Integration** *(Vision)*
 - **🤖 AI Summaries**: Automatic PDF content summarization
 - **❓ Question Generation**: Study questions from PDF content
 - **🎯 Key Point Extraction**: Highlight important information
