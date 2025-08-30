@@ -1,17 +1,16 @@
 // commands.rs
 
 use crate::database::db::PdfDatabase;
-use crate::helpers::help::{
-    calculate_search_duration, human_readable_size, hyperlink, truncate,
-}; //shorten_path
+use crate::helpers::help::{calculate_search_duration, human_readable_size, hyperlink, truncate, get_downloads_path}; //shorten_path
 use crate::indexer::scanner::scan_directory;
+use crate::export::exporter::Exporters;
 use dirs;
 use std::path::Path;
 use std::time::Instant;
 
 pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     // 1. Get database path using dirs crate
-    let db_path = get_database_path()?;
+    let db_path = PdfDatabase::get_database_path()?;
 
     // 2. Create PdfDatabase
     let db = PdfDatabase::new(&db_path)?;
@@ -28,11 +27,9 @@ pub fn init_command(dir_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn search_command(
-    query: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+pub fn search_command(query: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Check if database exists
-    let db_path = get_database_path()?;
+    let db_path = PdfDatabase::get_database_path()?;
     if !db_path.exists() {
         return Err("Database with indexed PDFs not found".into());
     } else {
@@ -69,12 +66,9 @@ pub fn search_command(
                 println!("    Size: {}", human_readable_size(r.size));
                 println!(
                     "    Path: {}",
-                    hyperlink(&r.path, &r.path)
-                    //hyperlink(&shorten_path(&r.path, 40), &r.path)
+                    hyperlink(&r.path, &r.path) //hyperlink(&shorten_path(&r.path, 40), &r.path)
                 );
-                
 
-                
                 println!("\x1b[34m───────────────────────────────────────────────\x1b[0m"); // separator line
                 println!(); // empty line between documents
             }
@@ -84,9 +78,89 @@ pub fn search_command(
     Ok(())
 }
 
-pub fn list_command(all: bool) -> Result<(), Box<dyn std::error::Error>> {
-    // Future: List PDFs from database
-    println!("📋 List not implemented yet (all: {})", all);
+pub fn list_command() -> Result<(), Box<dyn std::error::Error>> {
+    let db_path = PdfDatabase::get_database_path()?;
+    if !db_path.exists() {
+        return Err("Database with indexed PDFs not found. Run 'pdfx init' first.".into());
+    }
+
+    let db = PdfDatabase::open(&db_path)?;
+    let results = db.get_all_pdfs()?;
+
+    println!("\n📋 All Indexed PDFs");
+    println!("📊 Total: {} PDFs\n", results.len());
+
+    for (i, r) in results.iter().enumerate() {
+        println!(
+            "\x1b[1;94m📄 {}. {}\x1b[0m",
+            i + 1,
+            truncate(&r.filename, 50)
+        ); // Bright blue for filename
+        println!("    \x1b[34mSize:\x1b[0m {}", human_readable_size(r.size)); // Standard blue for "Size:"
+        println!("    \x1b[36mPath:\x1b[0m {}", hyperlink(&r.path, &r.path)); // Cyan blue for "Path:"
+        println!(
+            "    \x1b[38;5;75mModified:\x1b[0m {}",
+            r.modified.format("%Y-%m-%d %H:%M:%S")
+        ); // Light blue for "Modified:"
+        println!("\x1b[34m───────────────────────────────────────────────\x1b[0m");
+        println!();
+    }
+
+    Ok(())
+}
+
+pub fn export_command(format: Option<&str>) -> Result<(), Box<dyn std::error::Error>> {
+    let db_path = PdfDatabase::get_database_path()?;
+    if !db_path.exists() {
+        return Err("Database with indexed PDFs not found. Run 'pdfx init' first.".into());
+    }
+    
+    let db = PdfDatabase::open(&db_path)?;
+    let export_path = get_downloads_path()?;
+    let export_content = db.get_all_pdfs()?;
+
+    if export_content.is_empty() {
+        println!("📋 No PDFs found to export.");
+        return Ok(());
+    }
+
+    let formats_to_export = match format {
+        Some(f) => f.split(",").map(|s| s.trim()).collect(),
+        None => vec!["json", "csv", "markdown", "yaml", "html"],
+    };
+
+    println!("Exporting {} PDFs to {}", export_content.len(), export_path.display());
+    
+    // Generate each format
+    for fmt in formats_to_export {
+        match fmt {
+            "json" => {
+                Exporters::export_to_json(&export_content, &export_path)?;
+                println!("  ✅ Generated pdfs.json");
+            }
+            "csv" => {
+                Exporters::export_to_csv(&export_content, &export_path)?;
+                println!("  ✅ Generated pdfs.csv");
+            }
+            "markdown" => {
+                Exporters::export_to_markdown(&export_content, &export_path)?;
+                println!("  ✅ Generated pdfs.md");
+            }
+            "yaml" => {
+                Exporters::export_to_yaml(&export_content, &export_path)?;
+                println!("  ✅ Generated pdfs.yaml");
+            }
+            "html" => {
+                Exporters::export_to_html(&export_content, &export_path)?;
+                println!("  ✅ Generated pdfs.html");
+            }
+            _ => {
+                println!("  ❌ Unsupported format: {}", fmt);
+            }
+        }
+    }
+
+    println!("🎉 Export complete!");
     Ok(())
 }
 
@@ -110,14 +184,4 @@ pub fn cleanup_command() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn get_database_path() -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
-    // Helper function to get database path in user's data directory
-    let data_dir = dirs::data_dir().expect("Failed to get data directory");
-    let pdfx_dir = data_dir.join("pdfx");
 
-    // Create directory if it doesn't exist
-    std::fs::create_dir_all(&pdfx_dir)?;
-
-    let db_path = pdfx_dir.join("db.sqlite");
-    Ok(db_path)
-}

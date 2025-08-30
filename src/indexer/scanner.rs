@@ -48,7 +48,6 @@ pub fn scan_directory(
     let mut pdfs_found = 0;
     let mut dirs_skipped = 0;
 
-
     // Walk the directory tree recursively with walkdir
     for entry in WalkDir::new(path) {
         // Error handling for walkdir - silent skip permission denied
@@ -72,8 +71,6 @@ pub fn scan_directory(
                 // 1.3.1. Get the file metadata
                 let metadata = file_path.metadata()?;
 
-
-
                 // 1.3.3. Create PdfEntry
                 let pdf_entry = PdfEntry {
                     id: None,
@@ -93,11 +90,9 @@ pub fn scan_directory(
 
     // Finish progress bar and print summary on separate line
     pb.finish_and_clear();
-    
+
     // Print beautiful success message
-    println!(
-        "\n\x1b[1;92m✅ Index complete!\x1b[0m"
-    );
+    println!("\n\x1b[1;92m✅ Index complete!\x1b[0m");
     println!(
         "\n\x1b[34m📊 Summary:\x1b[0m \x1b[1;92m{} PDFs found\x1b[0m | \x1b[1;92m{} files processed\x1b[0m | \x1b[1;92m{} directories skipped\x1b[0m\n",
         pdfs_found, files_processed, dirs_skipped

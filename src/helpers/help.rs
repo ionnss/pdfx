@@ -1,6 +1,8 @@
 // helper.rs
 
 use std::time::Instant;
+use std::path::PathBuf;
+use dirs;
 
 // Nested helper functions
 pub fn yes_no(flag: bool) -> &'static str {
@@ -59,3 +61,13 @@ pub fn calculate_search_duration(start_time: Instant) -> u64 {
     let end_time = Instant::now();
     end_time.duration_since(start_time).as_millis() as u64
 }
+
+// Get Downloads directory for exporting PDFs
+pub fn get_downloads_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let download_dir = dirs::download_dir().ok_or("Failed to get downloads directory")?;
+    let export_dir = download_dir.join("pdfx_exports");
+    std::fs::create_dir_all(&export_dir)?;
+    Ok(export_dir)
+}
+
+// 

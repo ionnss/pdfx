@@ -69,9 +69,30 @@ pub enum Commands {
     ///   pdfx list --all             # Same as -a flag
     #[command(name = "list")]
     List {
-        /// Show all PDFs (default: false)
+    },
+
+    /// Export indexed PDFs to downloads directory
+    ///
+    /// Examples:
+    ///   pdfx export                   # Export to downloads directory
+    #[command(name = "export")]
+    Export {
+        /// Formats to export: "json", "csv", "txt", "markdown", "pdf", "yaml", "html"
+        ///
+        /// Examples:
+        ///   pdfx export --format               # Export to all formats
+        ///   pdfx export --format pdf           # Export to pdf format
+        ///   pdfx export --format markdown      # Export to markdown format
+        ///   pdfx export --format csv           # Export to csv format
+        ///   pdfx export --format txt           # Export to txt format
+        ///   pdfx export --format json          # Export to json format
+        ///   pdfx export --format yaml          # Export to yaml format
+        ///   pdfx export --format html       # Export to html format
+        ///   pdfx export --format json,yaml   # Export to json and yaml format
+        ///   pdfx export --format html,pdf    # Export to html and pdf format
         #[arg(short, long)]
-        all: bool,
+        format: Option<String>,
+
     },
 
     /// Clean up pdfx data and database

@@ -28,6 +28,8 @@
 
 - **Fast PDF Indexing**: SQLite-powered database with metadata extraction
 - **Lightning Search**: Instant filename-based search across indexed PDFs
+- **List & Browse**: View all indexed PDFs with detailed information
+- **Export Data**: Export your PDF library to JSON, CSV, Markdown, PDF, YAML, and HTML
 - **Cross-Platform**: Native support for Linux, macOS, and Windows
 - **Clean UI**: Beautiful progress bars and organized output
 - **Zero Dependencies**: No external system requirements
@@ -69,6 +71,14 @@ pdfx init ~                  # Index entire home directory
 # Search indexed PDFs
 pdfx search "machine learning"   # Search for keyword in filenames
 
+# List all indexed PDFs
+pdfx list                    # Show all PDFs with details
+
+# Export your PDF library
+pdfx export                  # Export all formats to Downloads folder
+pdfx export --format json    # Export only JSON format
+pdfx export --format csv,yaml # Export multiple formats
+
 # Clean up
 pdfx cleanup                 # Remove all indexed data
 ```
@@ -81,12 +91,59 @@ pdfx init ~/Documents
 # ✅ Scan complete! 170 PDFs found | 2500 files processed | 25 directories skipped
 # Indexed 170 PDFs in /Users/user/Library/Application Support/pdfx/db.sqlite
 
-# 2. Search your indexed PDFs instantly
+# 2. Browse your PDF library
+pdfx list
+# 📋 All Indexed PDFs
+# 📊 Total: 170 PDFs
+# 📄 1. The Rust Programming Language.pdf
+#     Size: 14.37 MB
+#     Path: /Users/user/Documents/books/rust.pdf
+#     Modified: 2025-01-15 10:30:00
+
+# 3. Search your indexed PDFs instantly
 pdfx search "rust programming"
 
-# 3. When you're done (optional cleanup)
+# 4. Export your library for sharing or backup
+pdfx export
+# Exporting 170 PDFs to /Users/user/Downloads/pdfx_exports
+#   ✅ Generated pdfs.json
+#   ✅ Generated pdfs.csv
+#   ✅ Generated pdfs.md
+#   ✅ Generated pdfs.yaml
+#   ✅ Generated pdfs.html
+# 🎉 Export complete!
+
+# 5. When you're done (optional cleanup)
 pdfx cleanup
 ```
+
+---
+
+## Export Formats
+
+pdfx supports multiple export formats for your PDF library:
+
+### Available Formats
+- **JSON**: Machine-readable format with full metadata
+- **CSV**: Spreadsheet-compatible format for data analysis
+- **Markdown**: Human-readable format with tables
+- **YAML**: Structured format for configuration files
+- **HTML**: Web-ready format for sharing online
+
+### Export Examples
+```bash
+# Export all formats to Downloads folder
+pdfx export
+
+# Export specific formats
+pdfx export --format json
+pdfx export --format csv,yaml
+pdfx export --format html
+```
+
+### Export Location
+- **Default**: `~/Downloads/pdfx_exports/` (or equivalent on your OS)
+- **Files**: `pdfs.json`, `pdfs.csv`, `pdfs.md`, `pdfs.yaml`, `pdfs.html`
 
 ---
 
@@ -182,17 +239,19 @@ pdfx init       # Rebuild index
 
 ## Roadmap
 
-### Current Status (v0.1.0)
+### Current Status (v0.2.0)
 - ✅ **PDF Indexing**: SQLite-based PDF database with metadata
 - ✅ **Filename Search**: Fast, case-insensitive filename search
+- ✅ **List Command**: Display all indexed PDFs with detailed information
+- ✅ **Export Data**: Export to JSON, CSV, Markdown, YAML, and HTML formats
 - ✅ **Cross-Platform**: Works on Linux, macOS, and Windows
 - ✅ **Clean UI**: Progress bars and organized output
 
 ### Planned Features
-- 📋 **List Command**: Display indexed PDFs with filtering
 - 📅 **Recent Command**: Show recently modified PDFs
 - 🔍 **Advanced Search**: Filter by size, date, path
 - 📊 **Statistics**: Show indexing statistics and storage usage
+- 🏷️ **Tagging System**: Categorize and tag PDFs for better organization
 
 See [FUTURE.md](FUTURE.md) for detailed roadmap and feature plans.
 

@@ -21,14 +21,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let target_dir = path.unwrap_or_else(|| std::env::current_dir().unwrap());
             init_command(&target_dir)?;
         }
-        Some(Commands::Search {
-            query,
-        }) => {
+        Some(Commands::Search { query }) => {
             search_command(&query)?;
         }
-        Some(Commands::List { all }) => {
-            list_command(all)?;
+        Some(Commands::List {  }) => {
+            list_command()?;
         }
+        Some(Commands::Export { format }) => {
+            export_command(format.as_deref())?;
+        } 
         Some(Commands::Cleanup) => {
             cleanup_command()?;
         }

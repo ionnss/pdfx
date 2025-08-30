@@ -1,11 +1,10 @@
 // database.rs
 
 // imports
-use crate::types::{PdfEntry, PdfSearchResult};
+use crate::types::{PdfEntry, PdfListResult, PdfSearchResult};
+use chrono::{DateTime, Utc};
 use rusqlite::{params, Connection, Result};
 
-
- 
 // Connection string for the database
 pub struct PdfDatabase {
     conn: Connection,
@@ -67,13 +66,7 @@ impl PdfDatabase {
         Ok(count)
     }
 
-
-
-
-    pub fn simple_search(
-        &self,
-        query: &str,
-    ) -> Result<Vec<PdfSearchResult>> {
+    pub fn simple_search(&self, query: &str) -> Result<Vec<PdfSearchResult>> {
         let mut results = Vec::new();
 
         // Search filenames only
@@ -96,5 +89,52 @@ impl PdfDatabase {
         Ok(results)
     }
 
+    pub fn get_all_pdfs(&self) -> Result<Vec<PdfListResult>> {
+        let mut pdfs = Vec::new();
 
+        let sql = "SELECT * FROM pdfs";
+        let mut stmt = self.conn.prepare(sql)?;
+
+        let pdf_iter = stmt.query_map([], |row| {
+            let modified_str: String = row.get(4)?;
+            let modified = DateTime::parse_from_rfc3339(&modified_str)
+                .map_err(|_e| {
+                    rusqlite::Error::InvalidColumnType(
+                        4,
+                        "DATETIME".to_string(),
+                        rusqlite::types::Type::Text,
+                    )
+                })?
+                .with_timezone(&Utc);
+            
+            let size: u64 = row.get(3)?;
+            
+            Ok(PdfListResult {
+                id: row.get(0)?,
+                path: row.get(1)?,
+                filename: row.get(2)?,
+                size,
+                size_human: crate::helpers::help::human_readable_size(size),
+                modified,
+            })
+        })?;
+
+        for pdf in pdf_iter {
+            pdfs.push(pdf?);
+        }
+
+        Ok(pdfs)
+    }
+
+    pub fn get_database_path() -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
+        // Helper function to get database path in user's data directory
+        let data_dir = dirs::data_dir().expect("Failed to get data directory");
+        let pdfx_dir = data_dir.join("pdfx");
+    
+        // Create directory if it doesn't exist
+        std::fs::create_dir_all(&pdfx_dir)?;
+    
+        let db_path = pdfx_dir.join("db.sqlite");
+        Ok(db_path)
+    }
 }
