@@ -112,10 +112,12 @@ We're excited to introduce **pdfx** - a lightning-fast terminal-native PDF index
 ### **🖥️ Commands Available**
 ```bash
 pdfx init [path]        # Index PDFs in specified directory (one-time setup)
-pdfx search "query"     # Search indexed PDFs (coming in v0.2.0)
-pdfx list [-a]          # List indexed PDFs (coming in v0.2.0)  
-pdfx recent [-l N]      # Show recent PDFs (coming in v0.2.0)
 pdfx cleanup            # Complete data cleanup and uninstall
+
+# Coming in v0.2.0:
+# pdfx search "query"     # Search indexed PDFs
+# pdfx list [-a]          # List indexed PDFs  
+# pdfx recent [-l N]      # Show recent PDFs
 ```
 
 #### **Database & Storage**
@@ -195,7 +197,7 @@ Built with excellence using:
 ---
 
 ## 🐛 **Known Issues**
-- **Command Placeholders**: Search, List, and Recent commands show "not implemented" messages
+- **Limited Functionality**: Only basic indexing and cleanup available in v0.1.0
 - **System Permissions**: Some directories may show permission warnings (this is normal)
 - **Large Directories**: Very large directory trees (>100k files) may take longer to scan
 - **Unicode Filenames**: Some special Unicode characters in filenames may display incorrectly
