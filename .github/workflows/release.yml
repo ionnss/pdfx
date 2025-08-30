@@ -113,7 +113,7 @@ jobs:
           4. Run: `./pdfx --help`
           
           ### ✨ What's New:
-          See [RELEASE_NOTES.md](https://github.com/ionnss/pdfx/blob/main/RELEASE_NOTES.md) for full details.
+          See [RELEASE_NOTES.md](https://github.com/ionnss/pdfx/blob/master/RELEASE_NOTES.md) for full details.
         draft: false
         prerelease: false
       env:
