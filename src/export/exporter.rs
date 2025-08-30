@@ -55,7 +55,7 @@ impl Exporters {
     ) -> Result<(), Box<dyn std::error::Error>> {
         let mut md_data = String::new();
         md_data.push_str("# PDF Library Report\n\n");
-        md_data.push_str(&format!("## Summary\n"));
+        md_data.push_str("## Summary\n");
         md_data.push_str(&format!("- **Total PDFs**: {}\n", pdfs.len()));
         md_data.push_str(&format!(
             "- **Export Date**: {}\n\n",
